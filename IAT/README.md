@@ -1,5 +1,6 @@
-#IAT extension for Minno
-##description: An extension script for implementing the Implicit Association Test (IAT) with Minno.
+# IAT extension for Minno
+
+### An extension script for implementing the Implicit Association Test (IAT) with Minno.
 
 The extension script is a Minno script that is activated by another Minno script. 
 For instance, this is a Minno script that uses an IAT extension:
