@@ -1,7 +1,5 @@
----
-title: IAT extension for Minno
-description: An extension script for implementing the Implicit Association Test (IAT) with Minno.
----
+#IAT extension for Minno
+##description: An extension script for implementing the Implicit Association Test (IAT) with Minno.
 
 The extension script is a Minno script that is activated by another Minno script. 
 For instance, this is a Minno script that uses an IAT extension:
@@ -71,4 +69,4 @@ API.addTasksSet({
 In order to use an extension, you need to know what parameters the extension accepts. To know that, the best method is to browse the extension script. At the beginning of the script, your will see the definition of all the parameters, with comments that explain what the parameter is, and with the parameter’s default value. If you’re fine with the default value, don’t include that parameter in your code. If you want to change the default value, include the parameter in your code and set a different value. 
 In addition, you can base your instructions page on a default instructions created for each task.
 
-The script appear under this directory. 
+The script appears under this directory. 
