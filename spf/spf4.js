@@ -215,19 +215,38 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
             {
                 logger: function(trialData, inputData, actionData,logStack)
                 {
-                    var stimList = this._stimulus_collection.get_stimlist();
-                    var mediaList = this._stimulus_collection.get_medialist();
+                    // time v0.3
+                    if (this._stimulus_collection) {
+                        var stimList = this._stimulus_collection.get_stimlist();
+                        var mediaList = this._stimulus_collection.get_medialist();
 
-                    //console.log('will replace');
-                    //console.log(inputData.handle);
-                    //console.log('with ' + resps);
-                    //console.log('the logger this below: ');
-                    //console.log(this);
+                        return {
+                            log_serial : logStack.length,
+                            trial_id: this.counter,
+                            name: this.name(),
+                            responseHandle: resps,
+                            latency: Math.floor(inputData.latency),
+                            stimuli: stimList,
+                            media: mediaList,
+                            data: trialData
+                        };
+                    }
+
+                    // time v0.5
+                    var trial = arguments[2];
+                    var global = window.piGlobal;
+                    var fullpath = _.get(trial, 'settings.logger.fullpath', false);
+                    inputData = arguments[1];
+                    trialData = trial.data;
+                    logStack = global.current.logs;
+                    stimList = trial.stimulusCollection.getStimlist();
+                    mediaList = trial.stimulusCollection.getMedialist({fullpath:fullpath});
+
                     return {
                         log_serial : logStack.length,
-                        trial_id: this.counter,
-                        name: this.name(),
-                        responseHandle: resps,
+                        trial_id: trial.counter,
+                        name: trial.name(),
+                        responseHandle: inputData.handle,
                         latency: Math.floor(inputData.latency),
                         stimuli: stimList,
                         media: mediaList,
