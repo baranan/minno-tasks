@@ -569,7 +569,7 @@ define(['pipAPI','underscore'], function(APIConstructor, _) {
 			var retText = params.template.replace(/leftKey/g, piCurrent.leftKey.toUpperCase());
 			retText = retText.replace(/rightKey/g, piCurrent.rightKey.toUpperCase());
 			retText = retText.replace(/leftAttribute/g, leftSortingLabel);
-			retText = retText.replace(/righttAttribute/g, rightSortingLabel);
+			retText = retText.replace(/rightAttribute/g, rightSortingLabel);
 			retText = retText.replace(/nBlocks/g, piCurrent.nBlocks);
 			retText = retText.replace(/blockNum/g, params.blockNum);
 			return retText;
