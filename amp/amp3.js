@@ -320,7 +320,7 @@ define(['pipAPI','underscore'], function(APIConstructor, _) {
 					actions: [
 						{type:'setTrialAttr',setter:{score:'1'}}, //there is no right and wrong response in the AMP, so we code category1 as 1, and category2 as 0.
 						{type:'hideStim',handle:'All'}, //Hide all stimuli
-						{type:'removeInput',handle:[leftSortingLabel, rightSortingLabel]}, //only one response is possible
+						{type:'removeInput', handle:'All'}, //only one response is possible
 						//The player sends the value of score to the server, when you call the 'log' action
 						{type:'log'}, // here we call the log action. This is because we want to record the latency of this input (the latency of the response)
 						{type:'setInput',input:{handle:'endTrial',on:'timeout',duration:'<%=trialData.ITI%>'}}//end the trial 250ms after the response
@@ -330,8 +330,8 @@ define(['pipAPI','underscore'], function(APIConstructor, _) {
 					conditions: [{type:'inputEquals',value:piCurrent.sortingLabel1}], //responded with category1 (e.g., unpleasant).
 					actions: [
 						{type:'setTrialAttr',setter:{score:'0'}}, //there is no right and wrong response in the AMP, so we code category1 as 1, and category2 as 0.
-						{type:'hideStim',handle:'All'},
-						{type:'removeInput',handle:[leftSortingLabel, rightSortingLabel]}, //only one response is possible
+						{type:'hideStim', handle:'All'},
+						{type:'removeInput',handle:'All'}, //only one response is possible
 						{type:'log'}, //Time to log the trial
 						{type:'setInput',input:{handle:'endTrial',on:'timeout',duration:'<%=trialData.ITI%>'}}
 					]
