@@ -100,6 +100,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			//Vertical location (top) of the attribute stimuli
 			attributeTop : 35, 
 			categoryTop : 'center', //Change to a number for a number
+			instTop:'center',//Change to a number for a number
 			
 			//Procedural features
 			ITIDuration : 250, 	
@@ -108,13 +109,20 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			randomCategoryLocation : true, //Whether to randomly select which category is on top. If false, then objectCat1 is on top.
 			randomAttributeLocation : false, //Whether to randomly select which attribute is on the left. If false, objectAtt1 is on the left.
 			
+			keyTopLeft: 'E', 
+			keyTopRight: 'I',
+			keyBottomLeft: 'C',
+			keyBottomRight: 'N',
+			
+			keyHeight:4, //Used to compute the bottom and top locations of the attribute label, above and below the key labels.
+			
 			//Instructions by block. 
 			instructions : 
 			{
 				firstBlock : 
 					'<div><p style="font-size:18px; text-align:left; margin-left:10px; font-family:arial"><color="000000"><br/>' + 
-					'Put your left pinky and index finger on the <b>W</b> and <b>C</b> keys. ' + 
-					'Put your right pinky and index finger on the <b>O</b> and <b>M</b> keys. ' + 
+					'Put your left middle and index finger on the <b>keyTopLeft</b> and <b>keyBottomLeft</b> keys. ' + 
+					'Put your right middle and index finger on the <b>keyTopRight</b> and <b>keyBottomRight</b> keys. ' + 
 					'Pairs of stimuli will appear in the middle of the screen. '  + 
 					'Four pairs of categories will appear in the corners of the screen. ' + 
 					'Sort each pair of items to the corner in which their two categories appear. ' + 
@@ -190,23 +198,25 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		/***    TRIALS    ***/
 		/*********************/
 		
-		var attTop = 4;
-		console.log('objectCat1.title.height='+objectCat1.title.height + " attribute1.title.height=" + attribute1.title.height);
+		console.log('piCurrent.keyTopLeft='+piCurrent.keyTopLeft);
 		var trialLayout = 
 		[
 			//Keys
-			{location:{left:2,top:1},media:{word:'key: W'}, css:{color:'#000000','font-size':'1em'}},
-			{location:{left:2,top:attTop},media:attribute1.title.media, css:attribute1.title.css},
-			{location:{left:2,top:attTop+attribute1.title.height},media:objectCat1.title.media, css:objectCat1.title.css},
-			{location:{right:2,top:1},media:{word:'key: O'}, css:{color:'#000000','font-size':'1em'}},
-			{location:{right:2,top:attTop},media:attribute2.title.media, css:attribute2.title.css},
-			{location:{right:2,top:attTop+attribute2.title.height},media:objectCat1.title.media, css:objectCat1.title.css},
-			{location:{left:2,bottom:1},media:{word:'key: C'}, css:{color:'#000000','font-size':'1em'}},
-			{location:{left:2,bottom:attTop},media:objectCat2.title.media, css:objectCat2.title.css},
-			{location:{left:2,bottom:attTop+objectCat2.title.height},media:attribute1.title.media, css:attribute1.title.css},
-			{location:{right:2,bottom:1},media:{word:'key: M'}, css:{color:'#000000','font-size':'1em'}},
-			{location:{right:2,bottom:attTop},media:objectCat2.title.media, css:objectCat2.title.css},
-			{location:{right:2,bottom:attTop+objectCat2.title.height},media:attribute2.title.media, css:attribute2.title.css}
+			{location:{left:2,top:1},media:{word:'key: ' + piCurrent.keyTopLeft}, css:{color:'#000000','font-size':'1em'}},
+			{location:{left:2,top:piCurrent.keyHeight},media:attribute1.title.media, css:attribute1.title.css},
+			{location:{left:2,top:piCurrent.keyHeight+attribute1.title.height},media:objectCat1.title.media, css:objectCat1.title.css},
+			
+			{location:{right:2,top:1},media:{word:'key: ' + piCurrent.keyTopRight}, css:{color:'#000000','font-size':'1em'}},
+			{location:{right:2,top:piCurrent.keyHeight},media:attribute2.title.media, css:attribute2.title.css},
+			{location:{right:2,top:piCurrent.keyHeight+attribute2.title.height},media:objectCat1.title.media, css:objectCat1.title.css},
+			
+			{location:{left:2,bottom:1},media:{word:'key: ' + piCurrent.keyBottomLeft}, css:{color:'#000000','font-size':'1em'}},
+			{location:{left:2,bottom:piCurrent.keyHeight},media:objectCat2.title.media, css:objectCat2.title.css},
+			{location:{left:2,bottom:piCurrent.keyHeight+objectCat2.title.height},media:attribute1.title.media, css:attribute1.title.css},
+			
+			{location:{right:2,bottom:1},media:{word:'key: ' + piCurrent.keyBottomRight}, css:{color:'#000000','font-size':'1em'}},
+			{location:{right:2,bottom:piCurrent.keyHeight},media:objectCat2.title.media, css:objectCat2.title.css},
+			{location:{right:2,bottom:piCurrent.keyHeight+objectCat2.title.height},media:attribute2.title.media, css:attribute2.title.css}
 			//Category labels
 		];
 
@@ -265,10 +275,10 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 				//Inputs for two possible responses.
 				input: [
 					{handle:'skip1',on:'keypressed', key:27}, //hit esc-enter to skip blocks
-					{handle:'left-top',on:'keypressed',key:'w'},
-					{handle:'left-bot',on:'keypressed',key:'c'},
-					{handle:'right-top',on:'keypressed',key:'o'},
-					{handle:'right-bot',on:'keypressed',key:'m'}
+					{handle:'left-top',on:'keypressed',key:piCurrent.keyTopLeft.toLowerCase()},
+					{handle:'left-bot',on:'keypressed',key:piCurrent.keyBottomLeft.toLowerCase()},
+					{handle:'right-top',on:'keypressed',key:piCurrent.keyTopRight.toLowerCase()},
+					{handle:'right-bot',on:'keypressed',key:piCurrent.keyBottomRight.toLowerCase()}
 				],
 				//Set what to do.
 				interactions: [
@@ -509,6 +519,10 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		{
 			var retText = inText.replace(/blockNum/g, inBlock);
 			retText = retText.replace(/nBlocks/g, piCurrent.nBlocks);
+			retText = retText.replace(/keyTopLeft/g, piCurrent.keyTopLeft.toUpperCase());
+			retText = retText.replace(/keyTopRight/g, piCurrent.keyTopRight.toUpperCase());
+			retText = retText.replace(/keyBottomLeft/g, piCurrent.keyBottomLeft.toUpperCase());
+			retText = retText.replace(/keyBottomRight/g, piCurrent.keyBottomRight.toUpperCase());
 			return (retText);
 		}
 		
@@ -533,7 +547,8 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 					stimuli: [
 						{//The instructions stimulus
 							//the instructions that will be shown on the screen
-							media:{html:getInstHTML(blockInst, iBlock)}
+							media:{html:getInstHTML(blockInst, iBlock)},
+							location:{top:piCurrent.instTop}
 						}
 					]
 				},
@@ -647,8 +662,3 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 
 	return spfExtension;
 });
-
-
-
-
-
