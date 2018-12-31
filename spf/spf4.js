@@ -256,7 +256,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
                         log_serial : logStack.length,
                         trial_id: trial.counter,
                         name: trial.name(),
-                        responseHandle: inputData.handle,
+                        responseHandle: resps,
                         latency: Math.floor(inputData.latency),
                         stimuli: stimList,
                         media: mediaList,
@@ -321,7 +321,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 							{type:'custom',fn:function(options,eventData)
 							    {
 							        resps = resps + '|' + eventData.handle;
-							        //console.log(eventData);
+							        //console.log(resps);
 							    }
 							},
 							{type:'showStim',handle:'errorFB'} //show error feedback
