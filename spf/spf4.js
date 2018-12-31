@@ -198,7 +198,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		/***    TRIALS    ***/
 		/*********************/
 		
-		console.log('piCurrent.keyTopLeft='+piCurrent.keyTopLeft);
+		//console.log('piCurrent.keyTopLeft='+piCurrent.keyTopLeft);
 		var trialLayout = 
 		[
 			//Keys
