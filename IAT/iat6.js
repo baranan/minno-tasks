@@ -405,7 +405,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 				// error when there is no correction
 				{
 					conditions: [
-						{type:'globalEquals', property:'errorCorrection', value:false}, //no error correction.
+						{type:'currentEquals', property:'errorCorrection', value:false}, //no error correction.
 						{type:'inputEquals',value:'onError'} //Was error
 					],
 					actions: [
