@@ -252,6 +252,8 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 						], // on time out
 						actions: [
 							{type:'showStim',handle:'deadline'}, // and show the second one
+							{type:'setTrialAttr', setter:{score:2}}, //2 is for timeout
+							{type:'log'}, // here we call the log action. 
 							{type:'removeInput', handle:'All'},
 							{type:'trigger', handle:'goBlank', duration:piCurrent.deadlineMsgDuration}
 						]
