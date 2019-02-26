@@ -89,6 +89,17 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			
 			nTrialsPerPrimeTargetPair:15, //How many trials in a block, per prime-target combination (always three blocks).
 			nBlocks : 3,
+			
+			//Whether to select the prime and targe stimuli randomly without repetition for each prime-target combination until exhuastion
+			//Or select the stimuli randomly without repetition for the whole task.
+			//For example, if a prime category has the items A, B, and C = random selection without repetition will not select the same stimulus twice until the other stimuli are selected. 
+			//If this parameter is set to true, after selecting the prime stimulus A with a target of the category 'positive', 'A' will not be selected again in trials with 'positive' targets, 
+			//until B and C are also selected. However, 'A' might appear as prime for other target because their selection is separate. 
+			//If this parameter is set to false, then 'A' will not be selected in any trial, until 'B' and 'C' are also selected.
+			//The default here is true because it allows showing all the prime-target possible combinations (if there are enough trials). 
+			//If this parameter is set to false, it possible that some prime categories will never appear with a certain target stimulus. 
+			separateStimulusSelection : true, 
+			
 			//Instructions template for each block. 
 			//If you enter blockNum, nBlocks, posAttribute and negAttribute they will be replaced with 
 			//the number of the current block, nBlocks, rightAttTargets.name and leftAttTargets.name
@@ -251,7 +262,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 							{type:'globalEquals',property:'deadlineDuration', value:0, negate:true} //if deadline duration is 0, then there is no deadline.
 						], // on time out
 						actions: [
-							{type:'showStim',handle:'deadline'}, // and show the second one
+							{type:'showStim',handle:'deadline'}, // did not respond on time
 							{type:'setTrialAttr', setter:{score:2}}, //2 is for timeout
 							{type:'log'}, // here we call the log action. 
 							{type:'removeInput', handle:'All'},
@@ -325,13 +336,15 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
                     {//The prime stimulus
 			        	data : {alias:inPrimeCat, handle:'primeStim'},
 				        inherit:'Default',
-				        media: {inherit:{type:'exRandom', set:inPrimeCat, seed:cond+'p'}}, //Inherit the prime media items for each condition, separately.
+				        media: {inherit: piCurrent.separateStimulusSelection ? //Should we select the prime stimulus for each target category separately?
+				        {type:'exRandom', set:inPrimeCat, seed:cond+'p'} : {type:'exRandom', set:inPrimeCat} }, //Inherit the prime media items for each condition, separately.
 				        css : piCurrent.primeStimulusCSS
 			        },
             		{
             			data : {wordCategory:inTargetCat, alias:inTargetCat, handle:'targetStim'},
             			inherit:'Default',
-            			media: {inherit:{type:'exRandom',set:inTargetCat, seed:cond+'t'}}, //Inherit the target media items for each condition, separately.
+				        media: {inherit: piCurrent.separateStimulusSelection ? //Should we select the target stimulus for each target category separately?
+				        {type:'exRandom', set:inTargetCat, seed:cond+'t'} : {type:'exRandom', set:inTargetCat} }, //Inherit the prime media items for each condition, separately.
             			css : (inTargetCat == targetCats.rightAttTargets.name) ? 
             			targetCats.rightAttTargets.stimulusCSS :
             			targetCats.leftAttTargets.stimulusCSS
@@ -472,6 +485,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			);
 		}
 		
+
 		//Last trial
 		theSequence.push(
 			{ //Instructions trial, the end of the task, instruction what to do next
