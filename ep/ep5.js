@@ -481,7 +481,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 						data : {'handle':'instStim'},
 						media:{html:'<div><p style="font-size:28px;text-align:center;"><color="#000000">' + 
 						'You have completed this task<br/><br/>Press SPACE to continue.</p></div>'},
-						location:{top:1}
+						size:{width:100}
 					}
 				]
 			}
