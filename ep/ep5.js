@@ -479,9 +479,9 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			stimuli: [
 					{//The instructions stimulus
 						data : {'handle':'instStim'},
-						media:{html:'<div><p style="font-size:28px"><color="#000000">' + 
+						media:{html:'<div><p style="font-size:28px;text-align:center;"><color="#000000">' + 
 						'You have completed this task<br/><br/>Press SPACE to continue.</p></div>'},
-						location:{top:1, left:1}
+						location:{top:1}
 					}
 				]
 			}
