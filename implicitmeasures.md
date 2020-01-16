@@ -7,7 +7,7 @@ We created extension scripts to save time in creating a few common reaction-time
 For instance, this is a Minno script that uses an IAT extension:
 
 ```js
-define(['https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/iat7.js'], function(iatExtension){
+define(['https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/iat8.js'], function(iatExtension){
     return iatExtension({
         category1 : {
             name : 'Black People', //Will appear in the data.
@@ -44,7 +44,7 @@ define(['https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/iat7.js'], func
 });
 ```
 
-That is the whole script. It activates the Minno script at 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/iat7.js' by calling a function called `iatExtension` with a few parameters that tell the extension what stimuli to use. 
+That is the whole script. It activates the Minno script at 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/iat8.js' by calling a function called `iatExtension` with a few parameters that tell the extension what stimuli to use. 
 
 Notice: the script iat7.js might be out of date. To find the most recent version for each implicit measure extension, see the bottom of the page.
 
@@ -76,7 +76,7 @@ Here are direct links to the most recent scripts for each of the supported impli
 
 Measure | Links
 ------- | -----
-IAT | [extension](https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/iat7.js) &middot; [example how to use](https://implicit.harvard.edu/implicit/user/yba/expimp//iatrace.js) &middot; [instructions text](https://implicit.harvard.edu/implicit/user/yba/expimp//instiat.jst)
+IAT | [extension](https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/iat8.js) &middot; [example how to use](https://implicit.harvard.edu/implicit/user/yba/expimp//iatrace.js) &middot; [instructions text](https://implicit.harvard.edu/implicit/user/yba/expimp//instiat.jst)
 AMP | [extension](https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/amp/amp3.js) &middot; [example how to use](https://implicit.harvard.edu/implicit/user/yba/expimp/amprace.js) &middot; [instructions text](https://implicit.harvard.edu/implicit/user/yba/expimp/instamp.jst) 
 Evaluative Priming | [extension](https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/ep/ep5.js) &middot; [example how to use](https://implicit.harvard.edu/implicit/user/yba/expimp/eprace.js) &middot; [instructions text](https://implicit.harvard.edu/implicit/user/yba/expimp/instep.jst)
 Single-Target IAT | [extension](https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/stiat/stiat6.js) &middot; [example how to use](https://implicit.harvard.edu/implicit/user/yba/expimp/stiatblk.js) &middot; [instructions text](https://implicit.harvard.edu/implicit/user/yba/expimp/inststiat.jst)
