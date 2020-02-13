@@ -39,7 +39,7 @@ define(['pipAPI', 'https://app-prod-03.implicit.harvard.edu/implicit/user/yba/te
 		},	
 
 		base_url : {//Where are your images at?
-			image : 'https://app-prod-03.implicit.harvard.edu/implicit/user/yba/expimp/images/'
+			image : 'https://baranan.github.io/minno-tasks/images/'
 		} 
 	});
 });
