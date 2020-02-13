@@ -1,4 +1,4 @@
-define(['pipAPI', 'https://app-prod-03.implicit.harvard.edu/implicit/user/yba/testnew/quiat.js'], function(APIConstructor, iatExtension){
+define(['pipAPI', 'https://baranan.github.io/minno-tasks/quiat.js'], function(APIConstructor, iatExtension){
     var API = new APIConstructor();
 
 	return iatExtension({
