@@ -346,7 +346,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
             // we save as CSV because qualtrics limits to 20K characters and this is more efficient.
             serialize: function (name, logs) {
                 var headers = ['block', 'trial', 'cond', 'type', 'cat',  'stim', 'resp', 'err', 'rt', 'd', 'fb', 'bOrd'];
-                console.log(logs);
+                //console.log(logs);
                 var myLogs = [];
                 var iLog;
                 for (iLog = 0; iLog < logs.length; iLog++)
@@ -488,11 +488,11 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		API.addSettings('base_url',piCurrent.base_url);
 		API.addSettings('hooks',{
 				endTask: function(){
-					console.log('compute score');
+					//console.log('compute score');
 					var DScoreObj = scorer.computeD();
 					piCurrent.feedback = DScoreObj.FBMsg;
 					piCurrent.d = DScoreObj.DScore; //YBYB: Added on 28March2017
-					console.log('score computed, d='+piCurrent.d + " fb=" + piCurrent.feedback);
+					//console.log('score computed, d='+piCurrent.d + " fb=" + piCurrent.feedback);
 					//YBYB: API.save will not work in qualtrics
 					//API.save({block3Cond:block3Cond, feedback:DScoreObj.FBMsg, d: DScoreObj.DScore});
 					//Perhaps we need to add this to support Qualtrics
