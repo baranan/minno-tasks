@@ -46,7 +46,7 @@ define(['https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/iat8.js'], func
 
 That is the whole script. It activates the Minno script at 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/iat8.js' by calling a function called `iatExtension` with a few parameters that tell the extension what stimuli to use. 
 
-Notice: the script iat7.js might be out of date. To find the most recent version for each implicit measure extension, see the bottom of the page.
+Notice: the script iat8.js might be out of date. To find the most recent version for each implicit measure extension, see the bottom of the page.
 
 Each extension has a large set of parameters that the researcher can change. All these parameters have default values, so there is no need to set all the parameters, only those that you want to change. In fact, one can activate the iat extension without setting any parameters at all, like this:
 
