@@ -1048,7 +1048,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		{
 			isCompatible = COMPATIBLE;
 		}
-		console.log('rightAttName='+rightAttName+' rightCatName='+rightCatName+' att1.name='+att1.name+' cat1.name='+cat1.name + 'isCompatible='+isCompatible);
+		//console.log('rightAttName='+rightAttName+' rightCatName='+rightCatName+' att1.name='+att1.name+' cat1.name='+cat1.name + 'isCompatible='+isCompatible);
 		
 		//Number variables
 		blockParamsAtts.nMiniBlocks = globalObj.blockAttributes_nMiniBlocks;
