@@ -28,6 +28,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 				canvasBackground: '#ffffff',
 				borderColor: 'lightblue'
 			},
+			//When scoring, we will consider the compatible condition the pairing condition that requires response with one key to [category1,attribute1] and the other key to [category2,attribute2]
 			category1 : {
 				name : 'Black people', //Will appear in the data and in the default feedback message.
 				title : {
@@ -64,27 +65,6 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 				//Stimulus css
 				stimulusCss : {color:'#336600','font-size':'2.3em'}
 			},
-			attribute2 :
-			{
-				name : 'Good words',
-				title : {
-					media : {word : 'Good words'},
-					css : {color:'#0000FF','font-size':'1.8em'},
-					height : 4 //Used to position the "Or" in the combined block.
-				},
-				stimulusMedia : [ //Stimuli content as PIP's media objects
-					{word: 'laughter'},
-					{word: 'happy'},
-					{word: 'glorious'},
-					{word: 'joy'},
-					{word: 'wonderful'},
-					{word: 'peace'},
-					{word: 'pleasure'},
-					{word: 'love'}
-				],
-				//Stimulus css
-				stimulusCss : {color:'#0000FF','font-size':'2.3em'}
-			},
 			attribute1 :
 			{
 				name : 'Bad words',
@@ -102,6 +82,27 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 					{word: 'terrible'},
 					{word: 'nasty'},
 					{word: 'evil'}
+				],
+				//Stimulus css
+				stimulusCss : {color:'#0000FF','font-size':'2.3em'}
+			},
+			attribute2 :
+			{
+				name : 'Good words',
+				title : {
+					media : {word : 'Good words'},
+					css : {color:'#0000FF','font-size':'1.8em'},
+					height : 4 //Used to position the "Or" in the combined block.
+				},
+				stimulusMedia : [ //Stimuli content as PIP's media objects
+					{word: 'laughter'},
+					{word: 'happy'},
+					{word: 'glorious'},
+					{word: 'joy'},
+					{word: 'wonderful'},
+					{word: 'peace'},
+					{word: 'pleasure'},
+					{word: 'love'}
 				],
 				//Stimulus css
 				stimulusCss : {color:'#0000FF','font-size':'2.3em'}
@@ -332,6 +333,10 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
         */
         API.addSettings('onEnd', window.minnoJS.onEnd);
 
+		//For debugging the logger
+		//window.minnoJS.logger = console.log;
+		//window.minnoJS.onEnd = console.log;
+		
         API.addSettings('logger', {
             // gather logs in array
             onRow: function(logName, log, settings, ctx){
@@ -345,7 +350,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
             // Transform logs into a string
             // we save as CSV because qualtrics limits to 20K characters and this is more efficient.
             serialize: function (name, logs) {
-                var headers = ['block', 'trial', 'cond', 'type', 'cat',  'stim', 'resp', 'err', 'rt', 'd', 'fb', 'bOrd'];
+                var headers = ['block', 'trial', 'cond', 'comp', 'type', 'cat',  'stim', 'resp', 'err', 'rt', 'd', 'fb', 'bOrd'];
                 //console.log(logs);
                 var myLogs = [];
                 var iLog;
@@ -356,7 +361,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
                         //console.log(logs[iLog]);
                         //console.log('---MISSING PROPERTIY---');
                     }
-                    else if(!hasProperties(logs[iLog].data, ['block', 'condition', 'score']))
+                    else if(!hasProperties(logs[iLog].data, ['block', 'condition', 'score', 'cong']))
                     {
                         //console.log('---MISSING data PROPERTIY---');
                         //console.log(logs[iLog].data);
@@ -367,27 +372,12 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
                         myLogs.push(logs[iLog]);
                     }
                 }
-                /*var content = logs.map(function (myLogs) { 
-                    return [
-                        log.data.block, //'block'
-                        log.trial_id, //'trial'
-                        log.data.condition, //'cond'
-                        log.name, //'type'
-                        log.stimuli[0], //'cat'
-                        log.media[0], //'stim'
-                        log.responseHandle, //'resp'
-                        //log.data.corResp, //'corResp'
-                        log.data.score, //'err'
-                        log.latency, //'rt'
-                        '', //'d'
-                        '', //'fb'
-                        '' //'bOrd'
-                        ]; });*/
                 var content = myLogs.map(function (log) { 
                     return [
                         log.data.block, //'block'
                         log.trial_id, //'trial'
                         log.data.condition, //'cond'
+                        log.data.cong, //'comp'
                         log.name, //'type'
                         log.stimuli[0], //'cat'
                         log.media[0], //'stim'
@@ -405,6 +395,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
                             9, //'block'
                             999, //'trial'
                             'score', //'cond'
+                            '', //'comp'
                             '', //'type'
                             '', //'cat'
                             '', //'stim'
@@ -919,7 +910,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 
 		//Get a mixer for a mini-block in a 4-categories block.
 		function getMiniMixer4(params)
-		{//{nTrialsInMini : , currentCond : , rightTrial1 : , leftTrial1 : , rightTrial2 : , leftTrial2 : , blockNum : , blockLayout : , parcel :)
+		{//{nTrialsInMini : , currentCond : , cong: , rightTrial1 : , leftTrial1 : , rightTrial2 : , leftTrial2 : , blockNum : , blockLayout : , parcel :)
 
 			////Because of the alternation, we randomize the trial order ourselves.
 			var atts = [];
@@ -946,14 +937,14 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 				mixerData.push(
 				{
 					inherit : (cats[iCat] == 1) ? params.leftTrial2 : params.rightTrial2,
-					data : {condition : params.currentCond, block : params.blockNum, parcel:params.parcel},
+					data : {condition : params.currentCond, block : params.blockNum, parcel:params.parcel, cong:params.cong},
 						layout : params.blockLayout
 				});
 				iCat++;
 				mixerData.push(
 				{
 					inherit : (atts[iAtt] == 1) ? params.leftTrial1 : params.rightTrial1,
-					data : {condition : params.currentCond, block : params.blockNum, parcel:params.parcel},
+					data : {condition : params.currentCond, block : params.blockNum, parcel:params.parcel, cong:params.cong},
 						layout : params.blockLayout
 				});
 				iAtt++;
@@ -1049,6 +1040,14 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		}
 		//Set the block's condition
 		blockCondition = blockParamsAtts.left1.name + ',' + blockParamsAtts.right1.name;
+		var COMPATIBLE = 'compatible';
+		var INCOMPATIBLE = 'incompatible';
+		var isCompatible = 'INCOMPATIBLE';
+		if (rightAttName == att1.name && rightCatName == cat1.name)
+		{
+			isCompatible = COMPATIBLE;
+		}
+		
 		//Number variables
 		blockParamsAtts.nMiniBlocks = globalObj.blockAttributes_nMiniBlocks;
 		blockParamsAtts.nTrials = globalObj.blockAttributes_nTrials;
@@ -1109,7 +1108,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
     		for (iBlock3Mini = 1; iBlock3Mini <= blockParamsCombined.nMiniBlocks; iBlock3Mini++)
     		{
     			trialSequence.push(getMiniMixer4({
-    			nTrialsInMini : nTrialsInMini, currentCond : blockCondition,
+    			nTrialsInMini : nTrialsInMini, currentCond : blockCondition, cong:isCompatible, 
     			rightTrial1 : rightAttTrial, leftTrial1 : leftAttTrial,
     			rightTrial2 : rightCatTrial, leftTrial2 : leftCatTrial,
     			blockNum : iBlock, blockLayout : blockLayout, parcel:'first'}));
@@ -1134,13 +1133,14 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			for (iBlock4Mini = 1; iBlock4Mini <= blockParamsCombined.nMiniBlocks; iBlock4Mini++)
 			{
 				trialSequence.push(getMiniMixer4({
-				nTrialsInMini : nTrialsInMini, currentCond : blockCondition,
+				nTrialsInMini : nTrialsInMini, currentCond : blockCondition, cong:isCompatible, 
 				rightTrial1 : rightAttTrial, leftTrial1 : leftAttTrial,
 				rightTrial2 : rightCatTrial, leftTrial2 : leftCatTrial,
 				blockNum : iBlock, blockLayout : blockLayout, parcel:'second'}));
 			}
 		    iBlock++;
 		}
+		isCompatible = (isCompatible==INCOMPATIBLE ? COMPATIBLE : INCOMPATIBLE);
 		//////////////////////////////
 		////Switch categories side block.
 		//Do the switch
@@ -1201,7 +1201,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
     		for (iBlock6Mini = 1; iBlock6Mini <= blockParamsCombined.nMiniBlocks; iBlock6Mini++)
     		{
     			trialSequence.push(getMiniMixer4({
-    			nTrialsInMini : nTrialsInMini, currentCond : blockCondition,
+    			nTrialsInMini : nTrialsInMini, currentCond : blockCondition, cong:isCompatible, 
     			rightTrial1 : rightAttTrial, leftTrial1 : leftAttTrial,
     			rightTrial2 : rightCatTrial, leftTrial2 : leftCatTrial,
     			blockNum : iBlock, blockLayout : blockLayout, parcel:'first'}));
@@ -1231,7 +1231,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			for (iBlock7Mini = 1; iBlock7Mini <= blockParamsCombined.nMiniBlocks; iBlock7Mini++)
 			{
 				trialSequence.push(getMiniMixer4({
-				nTrialsInMini : nTrialsInMini, currentCond : blockCondition,
+				nTrialsInMini : nTrialsInMini, currentCond : blockCondition, cong:isCompatible, 
 				rightTrial1 : rightAttTrial, leftTrial1 : leftAttTrial,
 				rightTrial2 : rightCatTrial, leftTrial2 : leftCatTrial,
 				blockNum : iBlock, blockLayout : blockLayout, parcel:'second'}));
@@ -1261,17 +1261,11 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		//Settings for the score computation.
 		scorer.addSettings('compute',{
 			ErrorVar:'score',
-			condVar:'condition',
+			condVar:'cong',
 			//condition 1
-			cond1VarValues: [
-				cat1.name + '/' + att1.name + ',' + cat2.name + '/' + att2.name,
-				cat2.name + '/' + att2.name + ',' + cat1.name + '/' + att1.name
-			],
+			cond1VarValues: [COMPATIBLE],
 			//condition 2
-			cond2VarValues: [
-				cat2.name + '/' + att1.name + ',' + cat1.name + '/' + att2.name,
-				cat1.name + '/' + att2.name + ',' + cat2.name + '/' + att1.name
-			],
+			cond2VarValues: [INCOMPATIBLE],
 			parcelVar : "parcel", 
 			parcelValue : ['first', 'second'],
 			fastRT : 150, //Below this reaction time, the latency is considered extremely fast.
