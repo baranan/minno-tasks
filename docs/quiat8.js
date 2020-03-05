@@ -1043,7 +1043,8 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		var COMPATIBLE = 'compatible';
 		var INCOMPATIBLE = 'incompatible';
 		var isCompatible = INCOMPATIBLE;
-		if (rightAttName == att1.name && rightCatName == cat1.name)
+		if ( (rightAttName == att1.name && rightCatName == cat1.name) || 
+			(rightAttName == att2.name && rightCatName == cat2.name) )
 		{
 			isCompatible = COMPATIBLE;
 		}
