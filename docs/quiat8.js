@@ -382,7 +382,6 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
                         log.stimuli[0], //'cat'
                         log.media[0], //'stim'
                         log.responseHandle, //'resp'
-                        //log.data.corResp, //'corResp'
                         log.data.score, //'err'
                         log.latency, //'rt'
                         '', //'d'
@@ -394,13 +393,12 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
                 content.push([
                             9, //'block'
                             999, //'trial'
-                            'score', //'cond'
+                            'end', //'cond'
                             '', //'comp'
                             '', //'type'
                             '', //'cat'
                             '', //'stim'
                             '', //'resp'
-                            '', //'corResp'
                             '', //'err'
                             '', //'rt'
                             piCurrent.d, //'d'
@@ -1048,7 +1046,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		{
 			isCompatible = COMPATIBLE;
 		}
-		//console.log('rightAttName='+rightAttName+' rightCatName='+rightCatName+' att1.name='+att1.name+' cat1.name='+cat1.name + 'isCompatible='+isCompatible);
+		console.log('rightAttName='+rightAttName+' rightCatName='+rightCatName+' att1.name='+att1.name+' cat1.name='+cat1.name + 'isCompatible='+isCompatible);
 		
 		//Number variables
 		blockParamsAtts.nMiniBlocks = globalObj.blockAttributes_nMiniBlocks;
