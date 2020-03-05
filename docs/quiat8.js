@@ -1042,11 +1042,12 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		blockCondition = blockParamsAtts.left1.name + ',' + blockParamsAtts.right1.name;
 		var COMPATIBLE = 'compatible';
 		var INCOMPATIBLE = 'incompatible';
-		var isCompatible = 'INCOMPATIBLE';
+		var isCompatible = INCOMPATIBLE;
 		if (rightAttName == att1.name && rightCatName == cat1.name)
 		{
 			isCompatible = COMPATIBLE;
 		}
+		console.log('rightAttName='+rightAttName+' rightCatName='+rightCatName+' att1.name='+att1.name+' cat1.name='+cat1.name + 'isCompatible='+isCompatible);
 		
 		//Number variables
 		blockParamsAtts.nMiniBlocks = globalObj.blockAttributes_nMiniBlocks;
