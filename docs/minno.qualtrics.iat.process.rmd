@@ -1,5 +1,5 @@
 ```{r}
-#Check to your own directory (where you keep the data file)
+#Change to your own directory (where you keep the data file)
 dir = 'C:\\Users\\yoav\\Documents\\bigfiles\\qualtrics.iat'
 ```
 
@@ -53,13 +53,15 @@ qiat.parse = function(df, id, data){
 
 ```{r}
 #Read your file here.
-df = read.csv(paste(dir, 'Minno IAT_March 5, 2020_11.37.csv',sep = '\\'))
+#df = read.csv(paste(dir, 'Minno IAT_March 5, 2020_11.37.csv',sep = '\\'))
+df = read.csv(paste(dir, 'demo gender science IAT_March 9, 2020_10.40.csv',sep = '\\'))
 ```
 
 
 ```{r}
 #The escaping in the data sometimes uses "" which we need to change to " for the parsing.
 #Note Q3 in my data was the columns that saved the IAT data for each participant. It might have a different name in your data. 
+library(kutils)
 df$IAT <- mgsub(df$Q3, pattern = c('""'), replacement = c('"'))
 ```
 
@@ -114,6 +116,7 @@ nTrials.long <- summaryBy(formula = err ~ id + blockName, data=iat.raw, FUN = le
 library(reshape2)
 nTrials <- dcast(nTrials.long, id ~ blockName, value.var = 'err.length')
 #You can change those number if your IAT had different numbers
+library(dplyr)
 nTrials <- nTrials %>% 
   mutate(ntrials.ok = case_when(
     nTrials$B3==20 & nTrials$B4==40 & nTrials$B6==20 & nTrials$B7==40 ~ TRUE,
@@ -124,6 +127,7 @@ table(nTrials$ntrials.ok, exclude=NULL)
 ```
 
 ```{r}
+library(IAT)
 iatscore <- cleanIAT(iat.raw, block_name="blockName", 
                      trial_blocks = c("B3", "B4", "B6", "B7"), 
                      session_id="id", 
