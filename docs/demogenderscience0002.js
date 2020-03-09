@@ -82,7 +82,6 @@ return iatExtension({
 			//Stimulus css
 			stimulusCss : {color:'#31940F','font-size':'2.3em'}
 		},
-		isTouch : API.getGlobal().isTouch,
 		
 		//The default feedback messages for each cutoff -
 			//attribute1, and attribute2 will be replaced with the name of attribute1 and attribute2.
