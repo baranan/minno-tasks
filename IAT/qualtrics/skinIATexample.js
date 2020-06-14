@@ -7,7 +7,7 @@ define(['pipAPI',  'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/qual
     var lightImagesLabel = [];
     var darkImagesLabel = [];
 	
-	var baseURL = 'https://baranan.github.io/minno-tasks/docs/images';
+	var baseURL = 'https://baranan.github.io/minno-tasks/images/';
 	  //Fill the sets of words and images for the gay categories, based on the gay-set condition
       if (set == 'A')
 	{
