@@ -103,7 +103,7 @@ var negWords = API.shuffle([
 		},
 
                 base_url : {//Where are your images at?
-                    image : 'https://galmaimon.github.io/iatage'
+                    image : 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/docs/images/'
                 } 
             });
             break;
@@ -189,7 +189,7 @@ var negWords = API.shuffle([
 		},
 
                 base_url : {//Where are your images at?
-                    image : 'https://galmaimon.github.io/iatage'
+                    image : 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/docs/images/'
                 } 
             });
             break;
@@ -275,7 +275,7 @@ var negWords = API.shuffle([
 		},
 
                 base_url : {//Where are your images at?
-                    image : 'https://github.com/baranan/minno-tasks/tree/master/docs/images'
+                    image : 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/docs/images/'
                 } 
             });
             break;
