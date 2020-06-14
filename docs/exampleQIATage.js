@@ -98,7 +98,7 @@ var posWords = API.shuffle([
 			stimulusCss : {color:'#0000FF','font-size':'2.3em'}
 		},
 		base_url : {//Where are your images at?
-			image : 'https://galmaimon.github.io/iatage'
+			image : 'https://baranan.github.io/minno-tasks/images/'
 		} 
 	});
 });
