@@ -34,6 +34,7 @@ Here, we will try to give you some information about each of the IATs implemente
 |`skinIATexample.js` | Project Implicit's `Dark Skinned People`/`Light Skinned People`, `Bad`/`Good` IAT. The photos are selected randomly from one of two sets of dark/light skinned people.|
 |`weaponsIATexample.js` | Project Implicit's `Black Americans`/`White Americans`, `Weapons`/`Harmless Objects` stereotype IAT.|
 |`weightIATexample.js` | Project Implicit's `Fat people`/`Thin people`, `Bad words`/`Good words` stereotype IAT.|
+|`ashmiziat.js` | An IAT in Hebrew with the categories `Ashkenazim`/`Mizrakhim`, `Good`/`Bad`|
 
 A couple of notes: 
 * In the evaluative (Good/Bad) IATs, for each participant, we randomly choose eight positive and eight negative attribute words from a sets of 48 positive and 48 negative words. In our internal tests, we did not find evidence that any of these words is more effective than the others.
