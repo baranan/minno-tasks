@@ -1,5 +1,5 @@
-define(['pipAPI', 'https://elinorbengayev.github.io/STIAT.js'], function(APIConstructor, stiatExtension){
-	//https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/qualtrics/qstiat6.js
+define(['pipAPI', 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/qualtrics/qstiat6.js'], function(APIConstructor, stiatExtension){
+	
 	var API = new APIConstructor();
 		  return stiatExtension({
 		  category : { 
