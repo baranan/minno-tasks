@@ -1,5 +1,5 @@
 define(['pipAPI', 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/qualtrics/qbiat6.js'], function(APIConstructor, iatExtension){
-  var API = new APIConstructor();
+ var API = new APIConstructor();
 
 	
 	return iatExtension({
@@ -59,7 +59,7 @@ define(['pipAPI', 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/qualt
 						//If you're using a startStimulus, set here. If not, set the parameter showStimuliWithInst to false (see later below)
 						media : {image : 'blacks.jpg'}, 
 							css : {color:'#31b404','font-size':'1em'}, 
-							height : 2
+							height : 13
 						}
 					}, 
 					stimulusMedia : [ //Stimuli content as PIP's media objects
@@ -82,7 +82,7 @@ define(['pipAPI', 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/qualt
 						startStimulus : {
 							media : {image : 'whites.jpg'},  
 							css : {color:'#31b404','font-size':'1em'}, 
-							height : 2
+							height : 13
 						}
 					}, 
 					stimulusMedia : [ //Stimuli content as PIP's media objects
