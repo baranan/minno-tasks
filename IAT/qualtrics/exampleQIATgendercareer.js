@@ -7,7 +7,7 @@ define(['pipAPI', 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/qualt
 			name : 'Career', //Will appear in the data.
 			title : {
 				media : {word : 'Career'}, //Name of the category presented in the task.
-				css : {color:'#31940F','font-size':'2em'}, //Style of the category title.
+				css : {color:'#31940F','font-size':'1.8em'}, //Style of the category title.
 				height : 4 //Used to position the "Or" in the combined block.
 			}, 
 			stimulusMedia : [ //Stimuli content as PIP's media objects
@@ -26,7 +26,7 @@ define(['pipAPI', 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/qualt
 			name : 'Family', //Will appear in the data.
 			title : {
 				media : {word : 'Family'}, //Name of the category presented in the task.
-				css : {color:'#31940F','font-size':'2em'}, //Style of the category title.
+				css : {color:'#31940F','font-size':'1.8em'}, //Style of the category title.
 				height : 4 //Used to position the "Or" in the combined block.
 			}, 
 			stimulusMedia : [ //Stimuli content as PIP's media objects
