@@ -20,6 +20,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor,Scorer, _) {
 	Run the task in order to learn about the name of these variables, when they are saved at the explicit table.
 	
 	Created by: Yoav Bar-Anan (baranan@gmail.com).
+	Modified by: Gal Maimon
 	**/
 
 	function iatExtension(options)
@@ -334,7 +335,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor,Scorer, _) {
             // Transform logs into a string
             // we save as CSV because qualtrics limits to 20K characters and this is more efficient.
             serialize: function (name, logs) {
-                var headers = ['block', 'trial', 'cond', 'comp', 'type', 'cat',  'stim', 'resp', 'err', 'rt', 'fb'];
+                var headers = ['block', 'trial', 'cond', 'type', 'cat',  'stim', 'resp', 'err', 'rt', 'fb'];
                 //console.log(logs);
                 var myLogs = [];
                 var iLog;
