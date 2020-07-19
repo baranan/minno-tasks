@@ -315,8 +315,8 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 				data : {score:0},// by default each trial is crrect, this is modified in case of an error
 				//Layout defines what will be presented in the trial. It is like a background display.
 				layout: [
-					{location:{left:2,top:1},media:{word:'key: e'}, css:{color:'#000000','font-size':'1em'}},
-					{location:{right:2,top:1},media:{word:'key: i'}, css:{color:'#000000','font-size':'1em'}},
+					{location:{left:2,top:1},media:{word:'key: E'}, css:{color:'#000000','font-size':'1em'}},
+					{location:{right:2,top:1},media:{word:'key: I'}, css:{color:'#000000','font-size':'1em'}},
 					{location:{left:2,top:4},media:targetCats.leftAttTargets.title.media, css:targetCats.leftAttTargets.title.css},
 					{location:{right:2,top:4},media:targetCats.rightAttTargets.title.media, css:targetCats.rightAttTargets.title.css}
 				],
@@ -522,8 +522,8 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 				{handle:'space',on:'space'} //Will handle a SPACEBAR reponse
 			],
 			layout: [
-				{location:{left:2,top:1},media:{word:'key: e'}, css:{color:'#000000','font-size':'1em'}},
-				{location:{right:2,top:1},media:{word:'key: i'}, css:{color:'#000000','font-size':'1em'}},
+				{location:{left:2,top:1},media:{word:'key: E'}, css:{color:'#000000','font-size':'1em'}},
+				{location:{right:2,top:1},media:{word:'key: I'}, css:{color:'#000000','font-size':'1em'}},
 				{location:{left:2,top:4},media:targetCats.leftAttTargets.title.media, css:targetCats.leftAttTargets.title.css},
 				{location:{right:2,top:4},media:targetCats.rightAttTargets.title.media, css:targetCats.rightAttTargets.title.css}
 			],
