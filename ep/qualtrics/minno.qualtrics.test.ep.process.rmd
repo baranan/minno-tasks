@@ -54,19 +54,10 @@ qiat.parse = function(df, id, data){
 ```{r}
 ###Read your file here.
 
-#We're reading two files from our two examples.
-df.no = read.csv(paste(dir, 'exampleBIAT_update.csv',sep = '\\'))
-df.img = read.csv(paste(dir, 'exampleBIATimage_update.csv',sep = '\\'))
-```
+df = read.csv(paste(dir, 'examplePriming-data.csv',sep = '\\'))
 
-```{r}
-#We bind the two datasets together, but you're probably going to have only one file
-df <- rbind(df.no[,c('StartDate','EndDate','ResponseId', 'Q2')], df.img[,c('StartDate','EndDate','ResponseId', 'Q2')])
-#Q2 is the question that displayed the IAT and all the IAT data was saved under Q2.
-#If the text 'block' does not appear in Q2's response, then the IAT data were not saved in that question. Somehow, the IAT was not completed, or perhaps this is from an earlier stage before your IAT was setup correctly.
+#Keep only the Q2, which, in our case, is the data from Minno
 df <- df[which(grepl('block', df$Q2)),]
-#NO NEED FOR THE NEXT LINE IN YOUR OWN DATA. In our test data, the other rows had data with some errors (testing while developing the qbiat)
-df = df[c(4,7),]
 
 ```
 
@@ -76,162 +67,43 @@ df = df[c(4,7),]
 #The escaping in the data sometimes uses "" which we need to change to " for the parsing.
 #Note Q3 in my data was the columns that saved the IAT data for each participant. It might have a different name in your data. 
 library(kutils)
-df$IAT <- mgsub(df$Q2, pattern = c('""'), replacement = c('"'))
+df$ep <- mgsub(df$Q2, pattern = c('""'), replacement = c('"'))
 ```
 
 ```{r}
 #Use Elad's parsing function
-df2 <- qiat.parse.quoted(df = df, id='ResponseId', data = 'IAT')
+df2 <- qiat.parse.quoted(df = df, id='ResponseId', data = 'ep')
 ```
 
 ```{r}
 #Sanity check: see the names of the variables.
 nrow(df2)
 names(df2)
-#If successful, these should be:  "id"    "block" "trial" "cond"  "type"  "cat"   "stim"  "resp"  "err"   "rt"    "d"     "fb"    "bOrd" 
+#If successful, these should be:  "id"    "block" "trial" "cond"  "type"  "cat"   "stim"  "resp"  "err"   "rt"    "fb"    
 ```
-
 
 ```{r}
 table(df2$block, exclude=NULL)
-#Keep only the critical blocks (the first block was practice)
-iat.raw <- df2[which(df2$block > 1),]
+
 #Make sure the 'compatible' trials are indeed what you expected them to be.
-table(iat.raw$cond, exclude=NULL)
+table(df2$cond, exclude=NULL)
 ```
 
 ```{r}
-iat.raw$cong <- ifelse(iat.raw$cond=='White people/Pleasant', 'cong', 
-                       ifelse(iat.raw$cond %in% c('Black people/Pleasant','Black People/Pleasant'), 'incong', NA))
-table(iat.raw$cong, exclude=NULL)
+df2$prime <- ifelse(grepl('Black', df2$cond), 'black', 
+                          ifelse(grepl('White', df2$cond), 'white', NA))
+table(df2$prime)
+
+df2$target <- ifelse(grepl('Unpleasant', df2$cond), 'bad', 
+                          ifelse(grepl('Pleasant', df2$cond), 'good', NA))
+table(df2$target)
 ```
 
-```{r}
-iat.raw <- iat.raw[which(!is.na(iat.raw$cong)),]
-table(iat.raw$block)
-```
-
+From hereafter, analyze the results however you decide. I will only show the means here, without excluding any trials other than error trials. 
 
 ```{r}
-#Verify that both are numbers (probably, integer)
-class(iat.raw$rt)
-class(iat.raw$err)
-```
-
-```{r}
-##Sanity check. For each participant, we expect a certain number of trials for in each block. 
-##We will indicate whether the participant has the expected number of trials within each of the critical block.
+df2.correct <- df2[which(df2$err==0),]
 library(doBy)
-nTrials.long <- summaryBy(formula = err ~ id + block, data=iat.raw, FUN = length)
-library(reshape2)
-nTrials <- dcast(nTrials.long, id ~ block, value.var = 'err.length')
-#You can change those number if your BIAT had different numbers
-library(dplyr)
-nTrials <- nTrials %>% 
-  mutate(ntrials.ok = case_when(
-    nTrials$`2`==16 & nTrials$`3`==16 & nTrials$`5`==16 & nTrials$`6`==16 & nTrials$`7`==16 & nTrials$`8`==16 & nTrials$`9`==16 ~ TRUE,
-    TRUE ~ FALSE
-  ))
-#If not all are TRUE, then you some participants are missing data
-table(nTrials$ntrials.ok, exclude=NULL)
+ep.means <- summaryBy(formula = rt ~ id + prime + target, data = df2.correct)
+summaryBy(formula = rt.mean ~ prime + target, data = ep.means, FUN = c(mean, sd, median))
 ```
-
-Nosek et al. (2014) recommended the following scoring algorithm:
-- Remove trials >10000 ms (the cleanIAT function does that)
-- Remove 1st four trials of response block (we already have done that when removing the _practice cond)
-- Retain error trials 
-- Recore <400ms to 400ms and >2000ms to 2000ms (we'll do that)
-- Compute D separately for each pair of two consectuive blocks separately, and then average
-- Removes tasks with >10% fast responses
-
-```{r}
-iat.raw$trial.latency <- ifelse(iat.raw$rt<400, 400, 
-                                ifelse(iat.raw$rt>2000, 2000, iat.raw$rt))
-min(iat.raw$trial.latency)
-max(iat.raw$trial.latency)
-```
-
-Separate the four pairs of blocks to two datasets, in order to use the cleanIAT function (I believe this will provide what we need, but I haven't tested that thoroughly).
-```{r}
-#The combination of compatibility condition and block number determined the blockName for the scoring function.
-iat.raw$blockName <- ifelse(iat.raw$cong == 'cong', 
-                            ifelse(iat.raw$block %in% c(2,3,6,7), 'B3', 
-                                   ifelse(iat.raw$block %in% c(4,5,8,9), 'B4', NA)),
-                            ifelse(iat.raw$cong == 'incong', 
-                                   ifelse(iat.raw$block %in% c(2,3,6,7), 'B6', 
-                                          ifelse(iat.raw$block %in% c(4,5,8,9), 'B7', NA)), NA))
-#Make sure you only have B3,B4,B6, and B7 and no NAs.
-table(iat.raw$blockName, exclude=NULL)
-#Not supposed to have any NA at this point. So, if you see <NA> here, investigate why 
-#(e.g., perhaps some of your data has different cond values than expected, if you changed the cond after running a few participants)
-iat.raw <- iat.raw[which(!is.na(iat.raw$blockName)),]
-```
-
-```{r}
-iat.raw1 <- iat.raw[which(iat.raw$block %in% c(2,3,4,5)),]
-iat.raw2 <- iat.raw[which(iat.raw$block %in% c(6,7,8,9)),]
-```
-
-
-```{r}
-library(IAT)
-
-#Score blocks 2-5
-
-iatscore1 <- cleanIAT(iat.raw1, block_name="blockName", 
-                     trial_blocks = c("B3", "B4", "B6", "B7"), 
-                     session_id="id", 
-                     trial_latency="trial.latency",
-                     trial_error = "err", 
-                     v_error=2, v_extreme=2, v_std=1) 
-#v_error=2 means recode error latency to m+600, v_error=1 mean the standard (onset of stimuli until the correct response is pressed). v_extreme=2(current standard)=delete trial latencies < 400ms. v_std=1 (current standard), block SD is performed including error trials 
-
-names(iatscore1)
-names(iatscore1)[names(iatscore1)!='id'] <- paste0(names(iatscore1)[names(iatscore1)!='id'],'.1')
-names(iatscore1)
-
-#Score blocks 6-9
-
-iatscore2 <- cleanIAT(iat.raw2, block_name="blockName", 
-                     trial_blocks = c("B3", "B4", "B6", "B7"), 
-                     session_id="id", 
-                     trial_latency="trial.latency",
-                     trial_error = "err", 
-                     v_error=2, v_extreme=2, v_std=1) 
-#v_error=2 means recode error latency to m+600, v_error=1 mean the standard (onset of stimuli until the correct response is pressed). v_extreme=2(current standard)=delete trial latencies < 400ms. v_std=1 (current standard), block SD is performed including error trials 
-
-names(iatscore2)
-names(iatscore2)[names(iatscore2)!='id'] <- paste0(names(iatscore2)[names(iatscore2)!='id'],'.2')
-names(iatscore2)
-```
-
-```{r}
-iatscore <- merge(iatscore1, iatscore2, all = T, by='id')
-iatscore$IAT <- rowMeans(iatscore[,c('IAT1.1', 'IAT1.2', 'IAT2.1', 'IAT2.2')], na.rm = T)
-iatscore$SUBEXCL = ifelse(iatscore$SUBEXCL.1>iatscore$SUBEXCL.2, iatscore$SUBEXCL.1, iatscore$SUBEXCL.2)
-```
-
-
-```{r}
-#How many participants were excluded for problematic performance?
-table(iatscore$SUBEXCL, exclude=NULL)
-#Summary of those who were not excluded.
-summary(iatscore$IAT[which(iatscore$SUBEXCL==0)])
-```
-
-```{r}
-##Simple graph
-library(ggplot2)
-iatscore$dummy <- ''
-box_plot <- ggplot(iatscore, aes(x = dummy, y = IAT))
-box_plot +
-  geom_boxplot() +
-  geom_dotplot(binaxis = 'y',
-               dotsize = 0.4,
-               stackdir = 'center') +
-  theme_classic() + 
-  stat_summary(geom = "point", fun.y = "mean", col = "black", size = 3, shape = 24, fill = "grey")
-iatscore$dummy <- NULL
-```
-
-
