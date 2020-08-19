@@ -505,18 +505,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		API.addSettings('base_url',piCurrent.base_url);
 		API.addSettings('hooks',{
 				endTask: function(){
-                    //console.log('compute score');
-                    if(!showDebriefing){
-                        var DScoreObj = scorer.computeD();
-                        piCurrent.feedback = DScoreObj.FBMsg;
-                        piCurrent.d = DScoreObj.DScore; //YBYB: Added on 28March2017
-                        }
-					
-					//console.log('score computed, d='+piCurrent.d + " fb=" + piCurrent.feedback);
-					//YBYB: API.save will not work in qualtrics
-					//API.save({block3Cond:block3Cond, feedback:DScoreObj.FBMsg, d: DScoreObj.DScore});
-					//Perhaps we need to add this to support Qualtrics
-					window.minnoJS.onEnd();
+                    window.minnoJS.onEnd();
 				}
 			});
 		/**
@@ -1269,9 +1258,31 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			}
         }
 
-        //if showDebriefing is false, the test will be ended withoute showing the feedback of the user
 
-        
+		//////// in this trial the score of the participant is computed//////////////////
+
+		trialSequence.push({
+			inherit : 'instructions',
+			data: {blockStart:true},
+			layout : [{media:{word:''}}],
+			customize : function(element, global){
+				var DScoreObj = scorer.computeD();
+				piCurrent.feedback = DScoreObj.FBMsg;
+				piCurrent.d = DScoreObj.DScore;
+				//console.log(piCurrent.feedback);
+			},
+
+		interactions: [{
+			conditions: [{type:'begin'}],
+			actions: [
+		  {type: 'endTrial'}]
+	   
+}]
+		});
+
+
+
+		
         if(!showDebriefing){
 		//////////////////////////////
 		//Add final trial
@@ -1324,13 +1335,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
                         }
                     ],
                    
-                        customize : function(element, global){
-                            var DScoreObj = scorer.computeD();
-                            piCurrent.feedback = DScoreObj.FBMsg;
-                            piCurrent.d = DScoreObj.DScore;
-                            //console.log(piCurrent.feedback);
-                        },
-        
+                        
                     interactions: [{
                         conditions: [{type:'begin'}],
                         actions: [
