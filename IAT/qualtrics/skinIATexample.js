@@ -1,4 +1,4 @@
-define(['pipAPI',  'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/qualtrics/quiat8.js'], function(APIConstructor, iatExtension){
+define(['pipAPI',  'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/qualtrics/quiat9.js'], function(APIConstructor, iatExtension){
 	
 	var API = new APIConstructor();
 	var set = API.shuffle(['A','B'])[0];

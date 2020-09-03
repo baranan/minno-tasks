@@ -1,4 +1,4 @@
-define(['pipAPI', 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/qualtrics/quiat8.js'], function(APIConstructor, iatExtension){
+define(['pipAPI', 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/qualtrics/quiat9.js'], function(APIConstructor, iatExtension){
     var API = new APIConstructor();
 var posWords = API.shuffle([
     'Love', 'Cheer', 'Friend', 'Pleasure', 
@@ -34,7 +34,7 @@ var negWords = API.shuffle([
                 {image: 'bush7.jpg'},
                         {image: 'bush8.jpg'},
                         {image: 'bush9.jpg'},
-                        {image: 'bush10.jpg'},define(['pipAPI', 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/qualtrics/quiat8.js'], function(APIConstructor, iatExtension){
+                        {image: 'bush10.jpg'},define(['pipAPI', 'https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/qualtrics/quiat9.js'], function(APIConstructor, iatExtension){
     var API = new APIConstructor();
 var posWords = API.shuffle([
     'Love', 'Cheer', 'Friend', 'Pleasure', 

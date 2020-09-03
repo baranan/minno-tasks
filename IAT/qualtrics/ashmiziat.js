@@ -1,4 +1,4 @@
-define(['https://baranan.github.io/minno-tasks/quiat8.js'], function(iatExtension){
+define(['https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/qualtrics/quiat9.js'], function(iatExtension){
 
     return iatExtension({
         category1 : {

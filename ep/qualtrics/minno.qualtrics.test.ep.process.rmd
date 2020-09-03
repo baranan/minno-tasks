@@ -54,7 +54,7 @@ qiat.parse = function(df, id, data){
 ```{r}
 ###Read your file here.
 
-df = read.csv(paste(dir, 'examplePriming-data.csv',sep = '\\'))
+df = read.csv(paste(dir, 'examplePriming-update.csv',sep = '\\'))
 
 #Keep only the Q2, which, in our case, is the data from Minno
 df <- df[which(grepl('block', df$Q2)),]

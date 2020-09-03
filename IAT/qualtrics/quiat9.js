@@ -338,7 +338,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		};
 
 		// extend the "current" object with the default
-		_.defaults(piCurrent, options, iatObj);
+		_.extend(piCurrent, _.defaults(options, iatObj));
 		_.extend(API.script.settings, options.settings);
 
         /**
