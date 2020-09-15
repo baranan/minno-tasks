@@ -382,7 +382,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
                     }
                     else
                     {
-                        // myLogs.push(logs[iLog]);
+                        myLogs.push(logs[iLog]);
                     }
                 }
                 var content = myLogs.map(function (log) { 
