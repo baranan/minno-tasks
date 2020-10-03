@@ -24,7 +24,7 @@ define(['pipAPI','https://baranan.github.io/minno-tasks/base_js.js'], function(A
             'Hatred', 'Hurtful', 'Sickening', 'Yucky']);
   
     return iatExtension({
-        //isTouch:true,
+        isTouch:true,
         
         category1 : {
             name : 'Black people', //Will appear in the data.
