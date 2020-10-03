@@ -1,4 +1,4 @@
-define(['pipAPI','https://web.stanford.edu/~mernyk/base_js.js'], function(APIConstructor, iatExtension){
+define(['pipAPI','https://baranan.github.io/minno-tasks/base_js.js'], function(APIConstructor, iatExtension){
 	var API = new APIConstructor();
 
   
