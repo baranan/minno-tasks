@@ -186,8 +186,8 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		};
 		
 		// extend the current object with the default
-        _.defaults(piCurrent, options, epObj);
-        
+        _.extend(piCurrent, _.defaults(options, epObj));
+
         _.extend(API.script.settings, options.settings);
 
         /**
@@ -637,4 +637,95 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 				MessageDef: [
 					{ cut:'-0.2', message:piCurrent.fb_CatWithLeftAtt.replace(/CATEGORY/g, inPrimeCatName)}, //D < -0.2
 					{ cut:'0.2', message:piCurrent.fb_catWithBoth.replace(/CATEGORY/g, inPrimeCatName) },// -0.2 <= D <= 0.2
-					{ cut:'105', message:piCurrent.fb_CatWithRightAtt.replace(/CATEGORY/g, inPrimeCatName) }// 
+					{ cut:'105', message:piCurrent.fb_CatWithRightAtt.replace(/CATEGORY/g, inPrimeCatName) }// D > 0.2 (and D<=105)
+				],
+				manyErrors : piCurrent.manyErrors,
+				tooFast : piCurrent.tooFast,
+				notEnough : piCurrent.notEnough		
+			});
+			
+			var scored = scorer.computeD();
+			scored.problem = (
+				scored.FBMsg == piCurrent.manyErrors || 
+				scored.FBMsg == piCurrent.tooFast || 
+				scored.FBMsg == piCurrent.notEnough);
+
+			return (scored);
+		}
+		//Helper to replace text in the feedback messages
+		function replaceCats(inText, catAname, catBname)
+		{
+			var retText= inText.replace(/CATEGORYA/g, catAname);  
+			retText = retText.replace(/CATEGORYB/g, catBname);
+			return(retText);
+		}
+		function getPreferenceMessage(params)
+		{//params: score1, score2, name1, name2
+			var message = replaceCats(piCurrent.fb_equal_CatAvsCatB, params.name1, params.name2);
+			var diffScore = params.score2 - params.score1;
+			if (diffScore > 0.2)
+			{
+				message = replaceCats(piCurrent.fb_rightAttWithCatA_leftAttWithCatB, params.name2, params.name1);
+			}
+			else if (diffScore < -0.2)
+			{
+				message = replaceCats(piCurrent.fb_rightAttWithCatA_leftAttWithCatB, params.name1, params.name2);
+			}
+			return({fb:message, score:diffScore});
+		}
+		
+		//What to do at the end of the task.
+		API.addSettings('hooks',{
+			endTask: function(){
+				//Compute and send the score
+				var logs=API.getLogs();
+				console.log(logs);
+				var scoreObj = {};
+				var savedFeedback = false;
+				for (var iCat = 0; iCat < primeCats.length; iCat++)
+				{
+					var tScoreObj = computeFB(primeCats[iCat].name);
+					var catName = primeCats[iCat].name.replace(/\s+/g, ''); //Remove white space from the name.
+					scoreObj[catName + '_FB'] = tScoreObj.FBMsg;
+					scoreObj[catName + '_score'] = tScoreObj.DScore;
+					for (var iOtherCat = 0; iOtherCat < iCat; iOtherCat++) //All the comparisons.
+					{
+						//console.log('iOtherCat=' + iOtherCat + ' iCat=' + iCat);
+						var otherCatName = primeCats[iOtherCat].name.replace(/\s+/g, ''); //Remove white space from the name.
+						var prfObj = {};
+						if (tScoreObj.problem)
+						{//If couldn't compute a score for this category, then can't compute preference
+							prfObj = {fb : tScoreObj.FBMsg, score : -9};
+						}
+						else
+						{//Compute preference
+							prfObj = getPreferenceMessage({
+								score1 : scoreObj[catName + '_score'], 
+								score2 : scoreObj[otherCatName + '_score'], 
+								name1 : primeCats[iCat].name, 
+								name2 : primeCats[iOtherCat].name});
+						}
+						//console.log(primeCats[iOtherCat].name + '-versus-' + primeCats[iCat].name + '_FB=' + prfObj.fb);
+						scoreObj[otherCatName + '-versus-' + catName + '_FB'] = prfObj.fb;
+						scoreObj[otherCatName + '-versus-' + catName + '_score'] = prfObj.score;
+						if (!savedFeedback)
+						{//Save the first two categories compared as the general feedback of this task (for the session only).
+							savedFeedback = true;
+							piCurrent.feedback = prfObj.fb;
+						}
+					}
+				}
+                //Save all those scores for the session data.
+              //  piCurrent.feedback = DScoreObj.FBMsg;
+				piCurrent.scoreObj = scoreObj;
+				window.minnoJS.onEnd();
+				//Record also in the database.
+				//API.save(scoreObj);
+			}
+		});
+		
+		return API.script;
+	}
+	
+	return epExtension;
+});

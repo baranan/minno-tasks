@@ -1,5 +1,6 @@
-define(['pipAPI','https://baranan.github.io/minno-tasks/qiattest.js'], function(APIConstructor, iatExtension){
+define(['pipAPI','https://baranan.github.io/minno-tasks/base_js.js'], function(APIConstructor, iatExtension){
 	var API = new APIConstructor();
+
   
   //Randomly choose the attribute words from a larger list of attribute words.
   //Internal studies in Project Implicit found no difference in performance between the words.
@@ -23,6 +24,8 @@ define(['pipAPI','https://baranan.github.io/minno-tasks/qiattest.js'], function(
             'Hatred', 'Hurtful', 'Sickening', 'Yucky']);
   
     return iatExtension({
+        isTouch:true,
+        
         category1 : {
             name : 'Black people', //Will appear in the data.
             title : {
@@ -106,5 +109,3 @@ define(['pipAPI','https://baranan.github.io/minno-tasks/qiattest.js'], function(
         }
     });
 });
-
-

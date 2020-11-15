@@ -215,8 +215,8 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		};
 
 		// extend the current object with the default
-		_.defaults(piCurrent, options, stiatObj);
-		
+		_.extend(piCurrent, _.defaults(options, stiatObj));
+
 		
 		/**
         **** For Qualtrics

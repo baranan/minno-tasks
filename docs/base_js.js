@@ -21,7 +21,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		{
 			fullscreen:false, //Should we show the task in full screen? A Qualtrics-only feature because in the usual Minno, we can go full-screen right at the beginning of the study.
         
-			isTouch:false, //Set whether the task is on a touch device.
+			isTouch:true, //Set whether the task is on a touch device.
 			//Set the canvas of the task
 			canvas : {
 				maxWidth: 725,
@@ -320,8 +320,8 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			//ATTENTION: We do not recommend showing participants their results. The IAT is a typical psychological measure so it is not very accurate. 
 			//In Project Implicit's website, you can see that we added much text to explain that there is still much unknown about the meaning of these results.
 			//We strongly recommend that you provide all these details in the debriefing of the experiment.
-			debriefingTextBottom : 'This result is not a definitive assessment of your attitudes. It is provided for educational purposes only.  Press space to continue.', //Will be shown below the feedback text. 
-            debriefingTextBottomTouch : 'This result is not a definitive assessment of your attitudes. It is provided for educational purposes only.  Touch the green area to continue.',
+			debriefingTextBottom : 'This result is not a definitive assessment of your attitudes. It is provided for educational purposes only.', //Will be shown below the feedback text. 
+
 			//The default feedback messages for each cutoff -
 			//attribute1, and attribute2 will be replaced with the name of attribute1 and attribute2.
 			//categoryA is the name of the category that is found to be associated with attribute1,
@@ -363,7 +363,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
             // Transform logs into a string
             // we save as CSV because qualtrics limits to 20K characters and this is more efficient.
             serialize: function (name, logs) {
-                var headers = ['block', 'trial', 'cond', 'comp', 'type', 'cat',  'stim', 'resp', 'err', 'rt', 'd', 'fb', 'bOrd'];
+                var headers = ['block', 'trial', 'cond', 'comp', 'type', 'cat',  'stim', 'resp', 'err', 'rt'];
                 //console.log(logs);
                 var myLogs = [];
                 var iLog;
@@ -396,10 +396,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
                         log.media[0], //'stim'
                         log.responseHandle, //'resp'
                         log.data.score, //'err'
-                        log.latency, //'rt'
-                        '', //'d'
-                        '', //'fb'
-                        '' //'bOrd'
+                        log.latency //'rt'
                         ]; });
                 //console.log('mapped');
                 //Add a line with the feedback, score and block-order condition
@@ -1257,12 +1254,14 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		//////// in this trial the score of the participant is computed//////////////////
 
 		trialSequence.push({
+			//inherit : 'instructions',
 			data: {blockStart:true},
 			layout : [{media:{word:''}}],
 			customize : function(element, global){
 				var DScoreObj = scorer.computeD();
 				piCurrent.feedback = DScoreObj.FBMsg;
 				piCurrent.d = DScoreObj.DScore;
+				console.log(piCurrent.feedback);
 			},
 
 			interactions: [{
@@ -1270,8 +1269,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 				actions: [{type: 'endTrial'}]
 			}]
 		});
-        
-        //if showDebriefing==True, we will show the feedback to the user
+		
         if(showDebriefing){
             //////////////////////////////
             //Add pre-Page before the debriefing is shown
@@ -1290,33 +1288,36 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
             /////////////////////////////
             //add debriefing trial, the feedback will be shown with text above and under ther result.
             trialSequence.push({
-                inherit:'instructions',
-                data: {blockStart:true},
-               
                 //the feedback massege will be shown to the user at the center of the screen
-                stimuli: [
-                    
-                {
-					inherit : 'Default',
-                    media : {word : (piCurrent.debriefingTextTop)},
-                    location:{left:2,top:15,right:2},
-                },
-                {
-                    inherit: 'Default',
-                    media :{word: ('<%=current.feedback%>') },
-                    location:{left:2,top:30,right:2}
-                },
-                {
-					inherit : 'Default',
-                    media : {word : (isTouch ? piCurrent.debriefingTextBottomTouch:piCurrent.debriefingTextBottom)},
-                    location:{left:2,top:45,right:2}
-                }
-             
-                
-                
-            ],
-				   
-            });	
+                stimuli: [{data:{handle:'feedbackstim'},media :{word:'<%=current.feedback%>'}}],
+                //when the user press enter the trial will end, there is no time limit for reading the feedback
+				input: [{handle:'space',on:'space'}],
+				layout: [
+					{//pre-text at the debriefing page, will be shown above the feeaback massege
+						media:piCurrent.debriefingTextTop,
+						//to control exactly were the text will be located change the 'top' property, low values at the top of the screen, hiegh values at the low part of the screen
+						location:{left:2,top:40,right:2},
+						css:{padding:'2%',fontSize:'1em'}
+					},
+					{//post-text at the debriefing page, will be shown under the feeaback massege
+						media:piCurrent.debriefingTextBottom,
+						//to control exactly were the text will be located change the 'top' property, low values at the top of the screen, hiegh values at the low part of the screen
+						location:{left:2,top:55,right:2},
+						css:{padding:'2%',fontSize:'1em'}
+					}
+				],
+                        
+				interactions: [
+					{
+						conditions: [{type:'begin'}],
+						actions: [{type: 'showStim', handle:'feedbackstim'}]
+					},
+					{
+						conditions: [{type:'inputEquals',value:'space'}],
+						actions: [{type:'endTrial'}]
+					}
+				]    
+			});		
 		}
 			
 		//////////////////////////////
