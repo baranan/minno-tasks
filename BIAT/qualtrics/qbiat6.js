@@ -422,6 +422,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor,Scorer, _) {
         });
 	// are we on the touch version
 		var isTouch = piCurrent.isTouch;
+		console.log(isTouch);
 		//We use the attribute names a lot, so let's read them here
 		var attribute1 = piCurrent.attribute1;
 		var attribute2 = piCurrent.attribute2;
@@ -435,6 +436,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor,Scorer, _) {
 	    var leftInput = !isTouch ? {handle:'left',on:'keypressed',key:'e'} : {handle:'left',on:'click', stimHandle:'left'};
 		var rightInput = !isTouch ? {handle:'right',on:'keypressed',key:'i'} : {handle:'right',on:'click', stimHandle:'right'};
 		var proceedInput = !isTouch ? {handle:'space',on:'space'} : {handle:'space',on:'bottomTouch', css:piCurrent.bottomTouchCss};
+		console.log(leftInput, rightInput, proceedInput);
 		/**
 		 * Create default Trial
 		 */
