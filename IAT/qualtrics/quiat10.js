@@ -152,6 +152,9 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			errorCorrection : true, //Should participants correct error responses?
 			errorFBDuration : 500, //Duration of error feedback display (relevant only when errorCorrection is false)
 			ITIDuration : 250, //Duration between trials.
+			
+			alertIfDataMaxedOut : true, //Alert if the data passed Qualtrics data limitiation of 20K characters.
+			shortData: false, //Shorten the data?
 
 			fontColor : '#000000', //The default color used for printed messages.
 			
@@ -364,7 +367,6 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
             // we save as CSV because qualtrics limits to 20K characters and this is more efficient.
             serialize: function (name, logs) {
                 var headers = ['block', 'trial', 'cond', 'comp', 'type', 'cat',  'stim', 'resp', 'err', 'rt', 'd', 'fb', 'bOrd'];
-                //console.log(logs);
                 var myLogs = [];
                 var iLog;
                 for (iLog = 0; iLog < logs.length; iLog++)
@@ -385,8 +387,8 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
                         myLogs.push(logs[iLog]);
                     }
                 }
-                console.log(myLogs);
                 var content = myLogs.map(function (log) { 
+			if(piCurrent.shortData) log = ShortenData(log);
                     return [
                         log.data.block, //'block'
                         log.trial_id, //'trial'
@@ -402,7 +404,6 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
                         '', //'fb'
                         '' //'bOrd'
                         ]; });
-                //console.log('mapped');
                 //Add a line with the feedback, score and block-order condition
                 content.push([
                             9, //'block'
@@ -419,10 +420,37 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
                             piCurrent.feedback, //'fb'
                             block3Cond //'bOrd'
                         ]);
-                //console.log('added');
                         
                 content.unshift(headers);
                 return toCsv(content);
+		    
+		function ShortenData(log){
+			var att1 = piCurrent.attribute1;
+			var att2 = piCurrent.attribute2;
+			var cat1 = piCurrent.category1;
+			var cat2 = piCurrent.category2;
+			
+			var name = [att1.name, att2.name, cat1.name, cat2.name];
+			var nameReplace = ['att1','att2','cat1','cat2'];
+			//replace log.stimuli[0]
+			var index = name.indexOf(log.stimuli[0]);
+			log.stimuli[0] = nameReplace[index];
+			//replace log.data.condition
+			var condA = log.data.condition.split(',')[0];
+			var condB = log.data.condition.split(',')[1];	
+			log.data.condition = nameReplace[name.indexOf(condA.split('/')[0])]+'/'+nameReplace[name.indexOf(condA.split('/')[1])]+
+				','+nameReplace[name.indexOf(condB.split('/')[0])]+'/'+nameReplace[name.indexOf(condB.split('/')[1])];
+			//replace log.media[0]
+			var allLists = [att1.stimulusMedia, att2.stimulusMedia, cat1.stimulusMedia, cat2.stimulusMedia];
+			var stimuliList = allLists[index].map(object => object.image || object.word);
+			var indexStimulus = stimuliList.indexOf(log.media[0]); //stimulus index in it's stimuli array
+			if (index === 0) log.media[0] = 'a'+'1'+'s'+(indexStimulus+1);
+			if (index === 1) log.media[0] = 'a'+'2'+'s'+(indexStimulus+1);
+			if (index === 2) log.media[0] = 'c'+'1'+'s'+(indexStimulus+1);
+			if (index === 3) log.media[0] = 'c'+'2'+'s'+(indexStimulus+1);
+			
+			return log;
+		}
 
                 function hasProperties(obj, props) {
                     var iProp;
@@ -447,6 +475,9 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
             },
             // Set logs into an input (i.e. put them wherever you want)
             send: function(name, serialized){
+		console.log('serialized', serialized,"flag",piCurrent.shortData);
+		if (serialized.length > 20000 && piCurrent.alertIfDataMaxedOut === true)
+		    alert('Data are too long for Qualtrics. Consider setting the parameter shortData to true');
                 window.minnoJS.logger(serialized);
             }
         });
