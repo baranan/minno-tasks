@@ -155,8 +155,13 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			
 			alertIfDataMaxedOut : true, //Alert if the data passed Qualtrics data limitiation of 20K characters.
 			shortData: false, //Shorten the data?
+			
+			categoriesOnTop: false, // in the cat/att blocks, should categories appear above attributes
 
 			fontColor : '#000000', //The default color used for printed messages.
+			
+			leftKey: 'e',
+            		rightKey: 'i',
 			
 			//Text and style for key instructions displayed about the category labels.
 			leftKeyText : 'Press "E" for', 
@@ -382,10 +387,8 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
                         // console.log(logs[iLog].data);
                         // console.log('---MISSING data PROPERTIY---');
                     }
-                    else
-                    {
-                        myLogs.push(logs[iLog]);
-                    }
+                    else myLogs.push(logs[iLog]);
+                    
                 }
                 var content = myLogs.map(function (log) { 
 			if(piCurrent.shortData) log = ShortenData(log);
@@ -403,7 +406,8 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
                         '', //'d'
                         '', //'fb'
                         '' //'bOrd'
-                        ]; });
+                        ]; 
+		});
                 //Add a line with the feedback, score and block-order condition
                 content.push([
                             9, //'block'
@@ -521,8 +525,8 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		 * Create inputs
 		 */
 
-		var leftInput = !isTouch ? {handle:'left',on:'keypressed',key:'e'} : {handle:'left',on:'click', stimHandle:'left'};
-		var rightInput = !isTouch ? {handle:'right',on:'keypressed',key:'i'} : {handle:'right',on:'click', stimHandle:'right'};
+		var leftInput = !isTouch ? {handle:'left',on:'keypressed',key:piCurrent.leftKey} : {handle:'left',on:'click', stimHandle:'left'};
+		var rightInput = !isTouch ? {handle:'right',on:'keypressed',key:piCurrent.rightKey} : {handle:'right',on:'click', stimHandle:'right'};
 		var proceedInput = !isTouch ? {handle:'space',on:'space'} : {handle:'space',on:'bottomTouch', css:piCurrent.bottomTouchCss};
 
 		/**
@@ -530,10 +534,8 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		*/
 		API.addSettings('canvas',piCurrent.canvas);
 		API.addSettings('base_url',piCurrent.base_url);
-		API.addSettings('hooks',{
-				endTask: function(){
-                    window.minnoJS.onEnd();
-				}
+	        API.addSettings('hooks',{
+		    endTask: window.minnoJS.onEnd
 			});
 		/**
 		 * Create default sorting trial
@@ -718,7 +720,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			],
 
 			instructions: [
-				{css:{'font-size':'1.4em',color:'black', lineHeight:1.2}, nolog:true, 
+				{css:{'font-size':'1.4em',color:piCurrent.fontColor, lineHeight:1.2}, nolog:true, 
 					location: {left:0,top:0}, size:{width:piCurrent.instWidth}}
 			],
 
@@ -814,11 +816,18 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			'   		<%= stimulusData.isLeft ? stimulusData.leftKeyText : stimulusData.rightKeyText %>  '  +
 			'   	</div>  '  +
 			'     '  +
+			'   	<% if (stimulusData.second && current.categoriesOnTop) { %>  '  +
+			'   		<div style="font-size:1.3em; max-width:100%; <%= stimulusData.secondCss %>">  '  +
+			'   			<%= stimulusData.second %>  '  +
+			'   		</div>  '  +
+			'   		<div style="font-size:2.3em; <%= stimulusData.orCss %>"><%= stimulusData.orText %> </div>  '  +
+			'   	<% } %>  '  +
+			'     '  +
 			'   	<div style="font-size:1.3em;<%= stimulusData.firstCss %>">  '  +
 			'   		<%= stimulusData.first %>  '  +
 			'   	</div>  '  +
 			'     '  +
-			'   	<% if (stimulusData.second) { %>  '  +
+			'   	<% if (stimulusData.second && !current.categoriesOnTop) { %>  '  +
 			'   		<div style="font-size:2.3em; <%= stimulusData.orCss %>"><%= stimulusData.orText %> </div>  '  +
 			'   		<div style="font-size:1.3em; max-width:100%; <%= stimulusData.secondCss %>">  '  +
 			'   			<%= stimulusData.second %>  '  +
