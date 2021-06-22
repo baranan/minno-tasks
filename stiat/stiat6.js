@@ -198,7 +198,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 				'<p align="center">Press the <b>space bar</b> when you are ready to start.</font></p></div>', 
 			
 			//The default feedback messages for each cutoff. 
-			//If you put attribute1, attribute2 and category here, 
+			//If you put attribute1, attribute2 and thecategory here, 
 			//these will be replaced with the names of attribute1, attribute2 and category.
 			fb_strongAssociationWithAttribute2 : 'Your data suggest a strong positive automatic attitude toward thecategory.',
 			fb_moderateAssociationWithAttribute2 : 'Your data suggest a moderate positive automatic attitude toward thecategory.',
