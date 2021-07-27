@@ -1,4 +1,4 @@
-define(['https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/qualtrics/quiat9.js'], function(iatExtension){
+define(['https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/qualtrics/quiat10.js'], function(iatExtension){
 
     return iatExtension({
         category1 : {
@@ -78,6 +78,8 @@ define(['https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/qualtrics/quiat
         },
         
         finalText : 'לחצו על מקש הרווח בכדי להמשיך למטלה הבאה', 			
+	    
+	shortData: false,
 
         leftKeyText : 'מקש "E"', 
         rightKeyText : 'מקש "I"', 
