@@ -2,6 +2,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 
 	/**
 	Created by: Yoav Bar-Anan (baranan@gmail.com). Modified by Elad
+	Based on iat8.js, updated by Elinor
 	 * @param  {Object} options Options that replace the defaults...
 	 * @return {Object}         PIP script
 	**/
