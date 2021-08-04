@@ -31,7 +31,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor,Scorer, _) {
 		//You can also do that from the outside, with a dedicated jsp file.
 		var batObj = 
 		{
-			istouch:false, //Set whether the task is on a touch device.
+			isTouch:false, //Set whether the task is on a touch device.
 			//Set the canvas of the task
 			canvas : {
 				maxWidth: 725,
