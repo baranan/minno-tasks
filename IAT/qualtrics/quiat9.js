@@ -1349,7 +1349,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			//condition 2
 			cond2VarValues: [INCOMPATIBLE],
 			parcelVar : "parcel", 
-			parcelValue : ['first', 'second'],
+			parcelValue : ['first'],
 			fastRT : 150, //Below this reaction time, the latency is considered extremely fast.
 			maxFastTrialsRate : 0.1, //Above this % of extremely fast responses within a condition, the participant is considered too fast.
 			minRT : 400, //Below this latency
