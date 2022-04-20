@@ -233,8 +233,8 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor,Scorer, _) {
 			leftKeyText : '"E" for all else', 
 			rightKeyText : '"I" if item belongs', 
 			keysCss : {'font-size':'0.8em', 'font-family':'courier', color:'#000000'},
-			rightKeyTextTouch : 'Left for all else', 
-			leftKeyTextTouch : 'Right if item belongs', 
+			leftKeyTextTouch : 'Left for all else', 
+			rightKeyTextTouch : 'Right if item belongs', 
 			//Text and style for the separator between the top and bottom category labels.
 			orText : 'or', 
 			orCss : {'font-size':'1.8em', color:'#000000'},
