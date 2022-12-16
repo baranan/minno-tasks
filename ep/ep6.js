@@ -368,7 +368,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		    {
 		        var inPrimeCatName = inPrimeCat.name;
 		        var inTargetCatName = inTargetCat.name;
-    		    var cond = inPrimeCat + "/" + inTargetCat;
+    		    	var cond = inPrimeCatName + "/" + inTargetCatName;
     			return ({
     				data: {condition: cond},
     				inherit:{set: 'basicTrial'},
@@ -590,6 +590,14 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		);
 		API.addSequence(theSequence);
 
+		function replaceCat(inText, catName)
+		{
+			var retText= inText.replace(/CATEGORY/g, catName);  
+			retText = retText.replace(/attribute1/g, targetCats.rightAttTargets.name);
+			retText = retText.replace(/attribute2/g, targetCats.leftAttTargets.name);
+			return(retText);
+		}
+
 		function computeFB(inPrimeCatName)
 		{
 			//the Scorer that compute the user feedback
@@ -610,9 +618,9 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			//CATEGORY is the CATEGORY name. Can also use attribute1 and attribute2 to refer to attribute1.name and attribute2.name.
 			scorer.addSettings('message',{
 				MessageDef: [
-					{ cut:'-0.2', message:piCurrent.fb_CatWithLeftAtt.replace(/CATEGORY/g, inPrimeCatName)}, //D < -0.2
-					{ cut:'0.2', message:piCurrent.fb_catWithBoth.replace(/CATEGORY/g, inPrimeCatName) },// -0.2 <= D <= 0.2
-					{ cut:'105', message:piCurrent.fb_CatWithRightAtt.replace(/CATEGORY/g, inPrimeCatName) }// D > 0.2 (and D<=105)
+					{ cut:'-0.2', message:replaceCat(piCurrent.fb_CatWithLeftAtt, inPrimeCatName)}, //D < -0.2
+					{ cut:'0.2', message:replaceCat(piCurrent.fb_catWithBoth, inPrimeCatName) },// -0.2 <= D <= 0.2
+					{ cut:'105', message:replaceCat(piCurrent.fb_CatWithRightAtt, inPrimeCatName) }// D > 0.2 (and D<=105)
 				],
 				manyErrors : piCurrent.manyErrors,
 				tooFast : piCurrent.tooFast,
@@ -632,6 +640,8 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		{
 			var retText= inText.replace(/CATEGORYA/g, catAname);  
 			retText = retText.replace(/CATEGORYB/g, catBname);
+			retText = retText.replace(/attribute1/g, targetCats.rightAttTargets.name);
+			retText = retText.replace(/attribute2/g, targetCats.leftAttTargets.name);
 			return(retText);
 		}
 		function getPreferenceMessage(params)
