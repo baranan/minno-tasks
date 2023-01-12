@@ -90,15 +90,15 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			nTrialsPerPrimeTargetPair:15, //How many trials in a block, per prime-target combination (always three blocks).
 			nBlocks : 3,
 			
-			//If separateStimulusSelection is 'complete', it means that for each prime-target combination, the program will exhuast all the prime-target stimulus combinations 
+			//If separateStimulusSelection is 'complete', it means that for each prime-target combination, the program will exhaust all the prime-target stimulus combinations 
 			//before repeating a stimulus-stimulus again combination again. 
-			//If separateStimulusSelection is 'partial', it means that the program will select the prime and targe stimuli randomly without repetition for each prime-target combination until exhuastion
-			//If separateStimulusSelection is 'none' it means that the program will select the stimuli randomly without repetition for the whole task.
+			//If separateStimulusSelection is 'partial', it means that the program will select the prime and target stimuli randomly without repetition for each prime-target combination until exhaustion
+			//If separateStimulusSelection is 'none' it means that the program will select the stimuli of each prime and target category randomly without repetition throughout the whole task.
 			//
-			//For example, if a prime category has the items A, B, and C = random selection without repetition will not select the same stimulus twice until the other stimuli are selected. 
-			//If this parameter is set 'partial', after selecting the prime stimulus A with a target of the category 'positive', 'A' will not be selected again in trials with 'positive' targets, 
+			//For example, if a prime category has the items A, B, and C = random selection without repetition (i.e., 'none') will not select the same stimulus twice until the other stimuli are selected. 
+			//If this parameter is set to 'none', then 'A' will not be selected in any trial, until 'B' and 'C' are also selected (with any target).
+			//If this parameter is set as 'partial', after selecting the prime stimulus A with a target of the category 'positive', 'A' will not be selected again in trials with 'positive' targets, 
 			//until B and C are also selected. However, 'A' might appear as prime for other target because their selection is separate. 
-			//If this parameter is set to 'none', then 'A' will not be selected in any trial, until 'B' and 'C' are also selected.
 			//If this parameter is set to 'complete', then 'partial' would apply, but, the selection would also make sure that no stimulus-stimulus 
 			//combination will repeat within the same prime-target category combination, until all the other combinations have been selected.
 
@@ -427,13 +427,13 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			var trials = [];
 		    for (iPrimeMedia = 0; iPrimeMedia < inPrimeCat.mediaArray.length; iPrimeMedia++)
 		    {
-    		    for (iTargetMedia = 0; iTargetMedia < inTargetCat.mediaArray.length; iTargetMedia++)
-    		    {
-    		        var newTrial = JSON.parse(JSON.stringify(basicTrial));
-    		        newTrial.stimuli[0].media = inPrimeCat.mediaArray[iPrimeMedia];
-    		        newTrial.stimuli[1].media = inTargetCat.mediaArray[iTargetMedia];
-    		        trials.push(newTrial);
-    		    }
+			    for (iTargetMedia = 0; iTargetMedia < inTargetCat.mediaArray.length; iTargetMedia++)
+			    {
+				var newTrial = JSON.parse(JSON.stringify(basicTrial));
+				newTrial.stimuli[0].media = inPrimeCat.mediaArray[iPrimeMedia];
+				newTrial.stimuli[1].media = inTargetCat.mediaArray[iTargetMedia];
+				trials.push(newTrial);
+			    }
 		    }
 			return (trials);
 		}
