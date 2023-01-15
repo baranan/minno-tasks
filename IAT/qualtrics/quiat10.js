@@ -1196,7 +1196,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 				nTrialsInMini : nTrialsInMini, currentCond : blockCondition, cong:isCompatible, 
 				rightTrial1 : rightAttTrial, leftTrial1 : leftAttTrial,
 				rightTrial2 : rightCatTrial, leftTrial2 : leftCatTrial,
-				blockNum : iBlock, blockLayout : blockLayout, parcel:'second'}));
+				blockNum : iBlock, blockLayout : blockLayout, parcel:'first'}));
 			}
 		    iBlock++;
 		}
@@ -1294,7 +1294,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 				nTrialsInMini : nTrialsInMini, currentCond : blockCondition, cong:isCompatible, 
 				rightTrial1 : rightAttTrial, leftTrial1 : leftAttTrial,
 				rightTrial2 : rightCatTrial, leftTrial2 : leftCatTrial,
-				blockNum : iBlock, blockLayout : blockLayout, parcel:'second'}));
+				blockNum : iBlock, blockLayout : blockLayout, parcel:'first'}));
 			}
         }
 
