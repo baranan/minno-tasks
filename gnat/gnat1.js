@@ -187,7 +187,7 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor,Scorer, _) {
 			nMiniBlocks : 2, //Set to 1 if don't need mini blocks. 0 will break the task.
 			
 			//Sets what focal attribute we use throughout the task.
-			focalAttribute : 'attribute1', // Accepts 'attribute1', 'attribute2' or 'bo'
+			focalAttribute : 'attribute1', // Accepts 'attribute1', 'attribute2' or 'both'
 
 			//Sets what attribute appears first. Irrelevant if focalAttributes is not 'both'. 
 			firstFocalAttribute : 'random', //Accepts 'attribute1', 'attribute2' or 'random'. 
