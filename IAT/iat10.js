@@ -1161,25 +1161,34 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		});
 
 		//Helper function to set the feedback messages.
-		function getFB(inText, categoryA, categoryB)
+		function getFB(inText, categoryA, categoryB, att1, att2)
 		{
-			var retText = inText.replace(/attribute1/g, att1.name);
-			retText = retText.replace(/attribute2/g, att2.name);
+			var retText = inText.replace(/attribute1/g, att1);
+			retText = retText.replace(/attribute2/g, att2);
 			retText = retText.replace(/categoryA/g, categoryA);
 			retText = retText.replace(/categoryB/g, categoryB);
 			return retText;
 		}
 
+		//Updated in May, 2023.
+		//Let's show in the feedback the title used in the actual IAT, unless it was not defined (e.g., it was an image)
+		//let cat1Name = cat1?.title?.word || cat1.name;
+		//let cat2Name = cat2?.title?.word || cat2.name;
+		let cat1Name = (cat1.title == null || cat1.title.media.word == null) ? cat1.name : cat1.title.media.word;
+		let cat2Name = (cat2.title == null || cat2.title.media.word == null) ? cat2.name : cat2.title.media.word;
+		let att1Name = (att1.title == null || att1.title.media.word == null) ? att1.name : att1.title.media.word;
+		let att2Name = (att2.title == null || att2.title.media.word == null) ? att2.name : att2.title.media.word;
 		//Set the feedback messages.
 		var messageDef = [
-				{ cut:'-0.65', message : getFB(piCurrent.fb_strong_Att1WithCatA_Att2WithCatB, cat1.name, cat2.name) },
-				{ cut:'-0.35', message : getFB(piCurrent.fb_moderate_Att1WithCatA_Att2WithCatB, cat1.name, cat2.name) },
-				{ cut:'-0.15', message : getFB(piCurrent.fb_slight_Att1WithCatA_Att2WithCatB, cat1.name, cat2.name) },
-				{ cut:'0.15', message : getFB(piCurrent.fb_equal_CatAvsCatB, cat1.name, cat2.name) },
-				{ cut:'0.35', message : getFB(piCurrent.fb_slight_Att1WithCatA_Att2WithCatB, cat2.name, cat1.name) },
-				{ cut:'0.65', message : getFB(piCurrent.fb_moderate_Att1WithCatA_Att2WithCatB, cat2.name, cat1.name) },
-				{ cut:'5', message : getFB(piCurrent.fb_strong_Att1WithCatA_Att2WithCatB, cat2.name, cat1.name) }
+				{ cut:'-0.65', message : getFB(piCurrent.fb_strong_Att1WithCatA_Att2WithCatB, cat1Name, cat2Name, att1Name, att2Name) },
+				{ cut:'-0.35', message : getFB(piCurrent.fb_moderate_Att1WithCatA_Att2WithCatB, cat1Name, cat2Name, att1Name, att2Name) },
+				{ cut:'-0.15', message : getFB(piCurrent.fb_slight_Att1WithCatA_Att2WithCatB, cat1Name, cat2Name, att1Name, att2Name) },
+				{ cut:'0.15', message : getFB(piCurrent.fb_equal_CatAvsCatB, cat1Name, cat2Name, att1Name, att2Name) },
+				{ cut:'0.35', message : getFB(piCurrent.fb_slight_Att1WithCatA_Att2WithCatB, cat2Name, cat1Name, att1Name, att2Name) },
+				{ cut:'0.65', message : getFB(piCurrent.fb_moderate_Att1WithCatA_Att2WithCatB, cat2Name, cat1Name, att1Name, att2Name) },
+				{ cut:'5', message : getFB(piCurrent.fb_strong_Att1WithCatA_Att2WithCatB, cat2Name, cat1Name, att1Name, att2Name) }
 		];
+
 		var scoreMessageObject = { MessageDef : messageDef };
 		if (piCurrent.manyErrors !== '')
 		{
