@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) {
 
 	/**
@@ -317,10 +316,10 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			//fb_moderate_Att1WithCatA_Att2WithCatB : 'Your responses suggested a moderate automatic preference for categoryB over categoryA.',
 			//fb_slight_Att1WithCatA_Att2WithCatB : 'Your responses suggested a slight automatic preference for categoryB over categoryA.',
 			//fb_equal_CatAvsCatB : 'Your responses suggested no automatic preference between categoryA and categoryB.',
-			fb_strong_Att1WithCatA_Att2WithCatB : "You were much faster at sorting 'categoryA' with 'attribute1' and 'categoryB' with 'attribute2'",
-			fb_moderate_Att1WithCatA_Att2WithCatB : "You were moderately faster at sorting 'categoryA' with 'attribute1' and 'categoryB' with 'attribute2'",
-			fb_slight_Att1WithCatA_Att2WithCatB : "You were slightly faster at sorting 'categoryA' with 'attribute1' and 'categoryB' with 'attribute2'",
-			fb_equal_CatAvsCatB : "You were about equally fast at sorting 'categoryA' with 'attribute1' and 'categoryB' with 'attribute2'.",
+			fb_strong_Att1WithCatA_Att2WithCatB : "You were much faster at sorting 'categoryA' with 'attribute1' and 'categoryB' with 'attribute2' than 'categoryB' with 'attribute1' and 'categoryA' with 'attribute2'",
+			fb_moderate_Att1WithCatA_Att2WithCatB : "You were moderately faster at sorting 'categoryA' with 'attribute1' and 'categoryB' with 'attribute2' than 'categoryB' with 'attribute1' and 'categoryA' with 'attribute2'",
+			fb_slight_Att1WithCatA_Att2WithCatB : "You were slightly faster at sorting 'categoryA' with 'attribute1' and 'categoryB' with 'attribute2' than 'categoryB' with 'attribute1' and 'categoryA' with 'attribute2'",
+			fb_equal_CatAvsCatB : "You were about equally fast at sorting 'categoryA' with 'attribute1' and 'categoryB' with 'attribute2' and at sorting 'categoryB' with 'attribute1' and 'categoryA' with 'attribute2'.",
 
 			//Error messages in the feedback
 			manyErrors: 'There were too many errors made to determine a result.',
