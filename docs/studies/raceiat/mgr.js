@@ -3,6 +3,7 @@ define(['managerAPI', 'dataPipe.js'], function(Manager) {
 
     API.setName('mgr');
     API.addSettings('skip',true);
+    API.addSettings('skin','demo');
 	init_data_pipe(API, 'eejUljqIEH9J', 'csv');
 
     //Randomly select which of two sets of category labels to use.
