@@ -1,0 +1,33 @@
+<html>
+    <head>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/minnojs/minno-quest@0.3/dist/main.css" />
+		
+        <script>
+            // load MinnoJS from the CDN (you probably don't need to change this)
+            var scriptTag                = document.createElement('script');
+            scriptTag.src                = 'https://cdn.jsdelivr.net/gh/minnojs/minno-quest@0.3/dist/pi-minno.js';
+            scriptTag.onload             = onLoad;
+            scriptTag.onreadystatechange = onLoad;
+            document.head.appendChild(scriptTag);
+        
+            // This function gets activated only after MinnoJS is loaded
+            function onLoad() {
+				// Create a div with class 'container' and id 'minno-app'
+		
+				// Create the canvas object
+				var canvas = document.createElement('div');
+
+				// Append the container to the body
+				document.body.appendChild(canvas);
+                
+                // Run your study (just set the correct URL)
+                minnoJS(canvas, 'mgr.js');
+                
+                // We need to wait a few miliseconds for Qualtrics to register the value that we entered
+                minnoJS.onEnd = function () { setTimeout(proceed, 100); }
+            }
+        </script>
+    </head>
+    <body>
+    </body>
+</html>
