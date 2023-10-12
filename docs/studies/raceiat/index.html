@@ -1,6 +1,10 @@
 <html>
     <head>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/minnojs/minno-quest@0.3/dist/main.css" />
+		<style type="text/css">
+        .container {padding-top: 15px;}
+		</style>
+	
         <script>
             // load MinnoJS from the CDN (you probably don't need to change this)
             var scriptTag                = document.createElement('script');
@@ -11,9 +15,19 @@
         
             // This function gets activated only after MinnoJS is loaded
             function onLoad() {
-                var canvas = document.createElement('div');
-                console.log(canvas);
-                document.body.appendChild(canvas);
+				// Create a div with class 'container' and id 'minno-app'
+				var container = document.createElement('div');
+				container.className = 'container';
+				container.id = 'minno-app';
+
+				// Create the canvas object
+				var canvas = document.createElement('div');
+
+				// Append the canvas object to the container
+				container.appendChild(canvas);
+
+				// Append the container to the body
+				document.body.appendChild(container);                var canvas = document.createElement('div');
                 
                 // Run your study (just set the correct URL)
                 minnoJS(canvas, 'mgr.js');
