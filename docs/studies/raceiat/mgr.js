@@ -61,7 +61,7 @@ define(['managerAPI', 'dataPipe.js'], function(Manager) {
             name: 'intro',
             templateUrl: 'intro.jst',
             title: 'Consent',
-            piTemplate: true,
+            piTemplate: false,
             header: 'Welcome'
         }],
 
