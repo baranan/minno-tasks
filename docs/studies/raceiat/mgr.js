@@ -60,7 +60,7 @@ define(['managerAPI', 'dataPipe.js'], function(Manager) {
             inherit: 'instructions',
             name: 'intro',
             templateUrl: 'intro.jst',
-            title: 'Consent',
+            title: 'Intro',
             piTemplate: false,
             header: 'Welcome'
         }],
