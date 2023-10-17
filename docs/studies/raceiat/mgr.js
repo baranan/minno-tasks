@@ -3,7 +3,6 @@ define(['managerAPI', 'dataPipe.js'], function(Manager) {
 
     API.setName('mgr');
     API.addSettings('skip',true);
-    API.addSettings('skin','demo');
 	init_data_pipe(API, 'eejUljqIEH9J', 'csv');
 
     //Randomly select which of two sets of category labels to use.
@@ -61,7 +60,6 @@ define(['managerAPI', 'dataPipe.js'], function(Manager) {
             name: 'intro',
             templateUrl: 'intro.jst',
             title: 'Intro',
-            piTemplate: true,
             header: 'Welcome'
         }],
 
@@ -70,7 +68,6 @@ define(['managerAPI', 'dataPipe.js'], function(Manager) {
             name: 'raceiat_instructions',
             templateUrl: 'raceiat_instructions.jst',
             title: 'IAT Instructions',
-            piTemplate: true,
             header: 'Implicit Association Test'
         }],
 
@@ -91,7 +88,6 @@ define(['managerAPI', 'dataPipe.js'], function(Manager) {
             name: 'lastpage',
             templateUrl: 'lastpage.jst',
             title: 'End',
-            piTemplate: true,
             //Uncomment the following if you want to end the study here.
             //last:true, 
             header: 'You have completed the study'
