@@ -3,7 +3,7 @@ define(['managerAPI', 'https://cdn.jsdelivr.net/gh/minnojs/minno-datapipe@0.1/da
 
     API.setName('mgr');
     API.addSettings('skip',true);
-	init_data_pipe(API, 'eejUljqIEH9J', 'csv');
+	init_data_pipe(API, 'zpjKaPesdEOI', 'csv');
 
     //Randomly select which of two sets of category labels to use.
     let raceSet = API.shuffle(['a','b'])[0];
