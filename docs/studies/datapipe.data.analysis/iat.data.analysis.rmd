@@ -1,0 +1,177 @@
+
+```{r}
+zip.directory <- 'C:\\Users\\Yoav\\OneDrive - Tel-Aviv University\\Documents\\bigfiles\\datapipe\\raceiat1'
+raw.directory <- paste0(zip.directory,'\\raw.files')
+proc.directory <- paste0(zip.directory,'\\processed')
+```
+
+
+# Read all the data files
+
+```{r}
+# Load the readr package
+library(readr)
+
+# Define the name of the zip file (that the storage download from the osf)
+zip_file <- paste0(zip.directory,"\\osfstorage-archive.zip")
+
+# List the files in the zip file
+files <- unzip(zip_file, list = TRUE, exdir = raw.directory)$Name
+
+# Extract the prefixes from the file names
+prefixes <- sub("_.*", "", files)
+
+# Create an empty list to store the data frames
+data_list <- list()
+
+# Loop over the unique prefixes
+for (p in unique(prefixes)) {
+  # Filter the files that match the prefix
+  p_files <- files[prefixes == p]
+  
+  # Read the files into a data frame
+  p_data <- read_csv(unzip(zip_file, p_files, exdir = raw.directory))
+  
+  # Rbind the columns
+  p_data <- do.call(rbind, p_data)
+  
+  # Add the data frame to the list with the prefix as the name
+  data_list[[p]] <- p_data
+}
+
+```
+# Process IAT
+
+```{r}
+##Read all the IAT data files.
+raw.iat <- as.data.frame(t(data_list[['raceiat']]))
+```
+
+```{r}
+#data.condition holds the block pairing condition.
+table(raw.iat$data.condition, exclude=NULL)
+```
+
+```{r}
+# Preprocessing for the IAT scoring function.
+
+raw.iat$blockName <- ifelse(raw.iat$data.condition %in% c('African Americans/Bad words,European Americans/Good words', 'Black people/Bad words,White people/Good words'), 
+                        ifelse(raw.iat$data.block %in% c(3,6), 'B3', 
+                               ifelse(raw.iat$data.block %in% c(4,7), 'B4', NA)), 
+                        ifelse(raw.iat$data.condition %in% c('European Americans/Bad words,African Americans/Good words', 'White people/Bad words,Black people/Good words'), 
+                          ifelse(raw.iat$data.block %in% c(3,6), 'B6', 
+                                 ifelse(raw.iat$data.block %in% c(4,7), 'B7', NA)), NA))
+table(raw.iat$blockName, exclude=NULL)
+#Make sure the <NA> comes only from practice blocks and insrtuction tiles
+table(raw.iat$data.block[which(is.na(raw.iat$blockName))], exclude=NULL)
+```
+
+```{r}
+class(raw.iat$latency)
+#If the latency is not numeric, convert to numeric
+raw.iat$trial_latency <- as.numeric(as.character(raw.iat$latency))
+range(raw.iat$trial_latency, na.rm=T)
+table(raw.iat$latency[which(is.na(raw.iat$trial_latency))], exclude=NULL)
+
+class(raw.iat$data.score) #data.score is 0 if the response was correct, and 1 if it was an error.
+#If the error variable is not numeric, convert to numeric
+raw.iat$trial_error <- as.numeric(as.character(raw.iat$data.score))
+table(raw.iat$trial_error, exclude=NULL)
+
+```
+
+```{r}
+library(IAT)
+
+#Score the IAT
+
+iatscore <- cleanIAT(raw.iat, block_name="blockName", 
+                     trial_blocks = c("B3", "B4", "B6", "B7"), 
+                     session_id="sessionId", 
+                     trial_latency="trial_latency",
+                     trial_error = "trial_error", 
+                     v_error=2, v_extreme=2, v_std=1) #v_error=2 means recode error latency to m+600
+
+#Some descriptive statistics of the IAT score
+summary(iatscore$IAT)
+#Frequency of excluded participants
+table(iatscore$SUBEXCL, exclude=NULL)
+```
+
+```{r}
+#Write a csv file with the IAT scores
+write.csv(iatscore, paste(proc.directory,'iatscore.csv',sep='\\'))
+```
+
+# Process the self-report questionnaire
+
+```{r}
+for.qst <- as.data.frame(t(data_list[['explicits']]))
+```
+
+
+```{r}
+class(for.qst$response)
+#Convert to numeric
+for.qst$resp <- as.numeric(as.character(for.qst$response))
+#Convert -999 to NA; Notice that we lose here information about the rare of skipping questions.
+for.qst$resp <- ifelse(for.qst$resp==-999, NA, for.qst$resp)
+```
+
+```{r}
+table(for.qst$name)
+```
+
+
+```{r}
+library(data.table)
+dups <- setDF(setDT(for.qst)[, if (.N > 1L) .SD, by=.(sessionId, name)])
+dup.sids <- dups$sessionId
+for.exp <- for.qst[which(!for.qst$sessionId %in% dup.sids),c('sessionId','name','resp')]
+
+
+library(reshape2)
+
+qst <- reshape2::dcast(data = for.exp, formula = sessionId ~ name, value.var = 'resp')
+```
+
+```{r}
+write.csv(qst, paste(proc.directory, 'qst.csv', sep='\\'))
+```
+
+# Read conditions
+
+```{r}
+conds <- as.data.frame(t(data_list[['unnamedTask']]))
+blockOrder <- raw.iat[which(!is.na(raw.iat$block3Cond)),c('sessionId','block3Cond')]
+
+blockOrder$iat.order <- ifelse(blockOrder$block3Cond %in% c('African Americans/Bad words,European Americans/Good words', 'Black people/Bad words,White people/Good words'), 
+                        'compatibleFirst', 
+                        ifelse(blockOrder$block3Cond %in% c('European Americans/Bad words,African Americans/Good words', 'White people/Bad words,Black people/Good words'), 
+                          'incompatibleFirst', NA))
+table(blockOrder$iat.order, exclude=NULL)
+
+conds <- merge(conds, blockOrder, by='sessionId', all = T)
+```
+
+```{r}
+write.csv(conds, paste(proc.directory, 'conds.csv', sep='\\'))
+```
+
+# Merge all processed data
+
+```{r}
+iatscores <- read.csv(paste(proc.directory, 'iatscore.csv', sep='\\'))
+selfReport <- read.csv(paste(proc.directory, 'qst.csv', sep='\\'))
+conditions <- read.csv(paste(proc.directory, 'conds.csv', sep='\\'))
+```
+
+```{r}
+all <- merge(iatscores, selfReport, by='sessionId', all = T)
+all <- merge(all, conditions, by='sessionId', all = T)
+```
+
+```{r}
+cor(all$IAT, all$attributes7, use = "complete.obs")
+```
+
