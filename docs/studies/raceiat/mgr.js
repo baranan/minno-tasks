@@ -102,7 +102,7 @@ define(['managerAPI', 'https://cdn.jsdelivr.net/gh/minnojs/minno-datapipe@0.1/da
         //Use if you want to redirect the participants elsewhere at the end of the study
         redirect:
         [{ 
-            type:'redirect', name:'redirecting', url: 'https://app.prolific.co/submissions/complete?cc=YOURCODE' 
+            type:'redirect', name:'redirecting', url: 'https://app.prolific.co/submissions/complete?cc=CHYHAOC9' 
             //You can use that to go back to prolific: https://app.prolific.co/submissions/complete?cc=YOURCODE
         }]
 
