@@ -5,7 +5,18 @@
 	var att1 = 'Bad';
 %>
 
-<p><b>Thank you very much for your participation.</b>
+
+<div class="panel panel-info" style="margin-top:1em">
+		<div class="panel-heading">
+			<h1 class="panel-title" style="font-size:2em">
+				The End
+			</h1>
+		</div>
+</div>
+
+<div class="panel-body">
+	<p class='lead'>
+<b>Thank you very much for your participation.</b>
 <br/><br/>
 
     In this study, we measured your automatically-activated associations between the concepts '<%=category1%>' and '<%=category2%>' with the concepts '<%=att1%>' and '<%=att2%>'. 
@@ -18,51 +29,59 @@
 	<b><%= global.raceiat.feedback %></b>
 	</br></br>
 
-<p><b>Disclaimer:</b></p>
-<p></p>These results are not a definitive assessment of your automatically-activated associations. 
-The results may be influenced by variables related to the test 
-(e.g., the category labels or particular items used to represent the categories on the IAT) 
-or the person (e.g., how tired you are). 
-The results are provided for educational purposes only.</p>
+	<p><b>Disclaimer:</b></p>
+	<p></p>These results are not a definitive assessment of your automatically-activated associations. 
+	The results may be influenced by variables related to the test 
+	(e.g., the category labels or particular items used to represent the categories on the IAT) 
+	or the person (e.g., how tired you are). 
+	The results are provided for educational purposes only.</p>
 
-<p><b>How Does The IAT Work?</b></p>
-<p>The IAT measures the strength of associations between concepts 
-(e.g., <%=category1%>, <%=category2%>) and attributes (e.g., <%=att1%>, <%=att2%>). 
-The main idea is that making a response is easier when 
-closely related items share the same response key. 
-We would say that one has an automatically activated association of 
-<%=category1%> with <%=att1%> and <%=category2%> with <%=att2%> 
-if they are faster to categorize items 
-when <%=category1%> and <%=att1%> share a response key 
-relative to when <%=category2%> and <%=att1%> share a response key. <br/><br/>
-Many researchers consider associations of Black and White people with 
-the concepts Good and Bad an estimate of 
-automatic preference between Black and White people. 
-An automatic preference is your very first preference betweens people, groups, or other objects. 
-An automatic preference might be activated even if people do not endorse that preference. 
-<br/><br/>
-Any single IAT is unlikely to predict behavior well for a specific individual. 
-In the aggregate, the IAT can predict behavior 
-such as discrimination in hiring and promotion, medical treatment, 
-and decisions related to criminal justice. </p>
+	<p><b>How Does The IAT Work?</b></p>
+	<p>The IAT measures the strength of associations between concepts 
+	(e.g., <%=category1%>, <%=category2%>) and attributes (e.g., <%=att1%>, <%=att2%>). 
+	The main idea is that making a response is easier when 
+	closely related items share the same response key. 
+	We would say that one has an automatically activated association of 
+	<%=category1%> with <%=att1%> and <%=category2%> with <%=att2%> 
+	if they are faster to categorize items 
+	when <%=category1%> and <%=att1%> share a response key 
+	relative to when <%=category2%> and <%=att1%> share a response key. <br/><br/>
+	Many researchers consider associations of Black and White people with 
+	the concepts Good and Bad an estimate of 
+	automatic preference between Black and White people. 
+	An automatic preference is your very first preference betweens people, groups, or other objects. 
+	An automatic preference might be activated even if people do not endorse that preference. 
+	<br/><br/>
+	Any single IAT is unlikely to predict behavior well for a specific individual. 
+	In the aggregate, the IAT can predict behavior 
+	such as discrimination in hiring and promotion, medical treatment, 
+	and decisions related to criminal justice. </p>
 
-<p><b>Does The Order In Which I Took The IAT Matter?</b></p>
-<p>Yes, the order in which you take the IAT can influence your overall results. 
-But, the effect is very small. 
-So if you first pair <%=category1%> + <%=att1%> / <%=category2%> + <%=att2%> 
-and then pair <%=category1%> + <%=att2%> / <%=category2%>  + <%=att1%>, 
-your results might be a just a tiny bit different 
-than they would be if you had done the reverse pairing first. 
-To minimize the order effect, we give more practice trials 
-before the second pairing than we did before the first pairing. 
-We also randomly assign participants to one of the two possible orderings, 
-so half of the test-takers complete 
-<%=category1%> + <%=att1%> / <%=category2%> + <%=att2%> 
-and then <%=category1%> + <%=att2%> / <%=category2%>  + <%=att1%>, 
-and the other half get the opposite order.</p>
+	<p><b>Does The Order In Which I Took The IAT Matter?</b></p>
+	<p>Yes, the order in which you take the IAT can influence your overall results. 
+	But, the effect is very small. 
+	So if you first pair <%=category1%> + <%=att1%> / <%=category2%> + <%=att2%> 
+	and then pair <%=category1%> + <%=att2%> / <%=category2%>  + <%=att1%>, 
+	your results might be a just a tiny bit different 
+	than they would be if you had done the reverse pairing first. 
+	To minimize the order effect, we give more practice trials 
+	before the second pairing than we did before the first pairing. 
+	We also randomly assign participants to one of the two possible orderings, 
+	so half of the test-takers complete 
+	<%=category1%> + <%=att1%> / <%=category2%> + <%=att2%> 
+	and then <%=category1%> + <%=att2%> / <%=category2%>  + <%=att1%>, 
+	and the other half get the opposite order.</p>
 
-<p>Please press the button below to complete the study.</p>
+	<p>Please press the button below to complete the study.</p>
+	</p>
+	<div class="text-center proceed" style="margin: 30px auto 10px;">
+		<button pi-message-done type="button" class="btn btn-primary">
+			Finish
+		</button>
+	</div>
+</div>
 
+<p>
 
 
 
