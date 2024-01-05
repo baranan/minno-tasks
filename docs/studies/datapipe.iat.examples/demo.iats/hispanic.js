@@ -1,4 +1,4 @@
-define(['pipAPI','/implicit/common/all/js/pip/piscripts/iat/iat10.js'], function(APIConstructor, iatExtension){
+define(['pipAPI','https://cdn.jsdelivr.net/gh/baranan/minno-tasks@0.*/IAT/iat10.js'], function(APIConstructor, iatExtension){
 	var API = new APIConstructor();
 
 	API.addGlobal({
