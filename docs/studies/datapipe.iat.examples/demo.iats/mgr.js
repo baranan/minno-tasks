@@ -54,6 +54,11 @@ define(['managerAPI', 'https://cdn.jsdelivr.net/gh/minnojs/minno-datapipe@0.*/da
             name: 'weight',
             scriptUrl: 'weight.js'
         }],
+	hispanic: [{
+            type: 'time',
+            name: 'hispanic',
+            scriptUrl: 'hispanic.js'
+        }],
         race: [{
             type: 'time',
             name: 'race',
@@ -103,6 +108,10 @@ define(['managerAPI', 'https://cdn.jsdelivr.net/gh/minnojs/minno-datapipe@0.*/da
 	                    { 
 	                        conditions:[{compare: 'global.choose.questions.choice.response', to: 'sexuality'}],
 	                        data:[{inherit:'sexuality'}]
+	                    },
+	                    { 
+	                        conditions:[{compare: 'global.choose.questions.choice.response', to: 'hispanic'}],
+	                        data:[{inherit:'hispanic'}]
 	                    },
 	                    { 
 	                        conditions:[{compare: 'global.choose.questions.choice.response', to: 'weight'}],
