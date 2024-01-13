@@ -3,9 +3,11 @@ define(['managerAPI',
         'https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js',
         'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js', 'datapipe.js'], function(Manager, minno_mesh, facemesh, facemesh2){
 
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const pt = urlParams.get('pt');
+
+	//You can use the commented-out code to get parameters from the URL.
+	//const queryString = window.location.search;
+    //const urlParams = new URLSearchParams(queryString);
+    //const pt = urlParams.get('pt');
 
 	var API    = new Manager();
 	//const subid = Date.now().toString(16)+Math.floor(Math.random()*10000).toString(16);
@@ -107,7 +109,7 @@ define(['managerAPI',
         redirect:
         [{ 
 			//Replace with any URL you need to put at the end of your study, or just remove this task from the sequence below
-            type:'redirect', name:'redirecting', url: 'https://www.google.com/search?q='+pt 
+            type:'redirect', name:'redirecting', url: 'https://www.google.com/search' 
         }],
 		
         uploading: uploading_task({header: 'just a moment', body:'Just a moment... Loading... Please wait a litle bit...', buttonText:'Continue'})
