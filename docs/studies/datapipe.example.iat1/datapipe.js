@@ -1,9 +1,6 @@
 function init_data_pipe(API, experimentID, args = false) {
     const file_type = !args || !args.file_type ? 'json': args.file_type.toLowerCase();
     const debug = !!args && !!args.debug;
-    //console.log({file_type});
-    //console.log({debug});
-
     
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -12,13 +9,10 @@ function init_data_pipe(API, experimentID, args = false) {
 
     const params = !args || !args.params ? {}: args.params;
 
-//    console.log({params});
-
-
     const hash = Date.now().toString(16)+Math.floor(Math.random()*10000).toString(16);
     var APIglobal = API.getGlobal(); 
     APIglobal.sessionId = hash;
-    const manager_name = API.script.name;
+
     let data = '';
     const debug_str = !debug ? '' : 'debug/';
     //fetch('https://psych-studies.com/datapipe/'+debug_str+experimentID.split('').map(v=>v.charCodeAt(0)).reduce((a,v)=>a+((a<<7)+(a<<3))^v).toString(16));
@@ -27,8 +21,8 @@ function init_data_pipe(API, experimentID, args = false) {
     API.addSettings('logger', {
         // gather logs in array
         onRow: function(logName, log, settings, ctx){
-            
-            if (logName===manager_name) 
+
+            if (logName===API.script.name) 
             {
                 ctx.logs = [];
                 ctx.type = 'anonymous manager';
@@ -69,7 +63,7 @@ function init_data_pipe(API, experimentID, args = false) {
                 data = JSON.stringify(serialized);
             }
 
-            if (data && ctx.type==='task' && logName !== manager_name)
+            if (data && ctx.type==='task' && logName !== API.script.name)
             {
                 APIglobal.sent = false;
             	return	fetch("https://pipe.jspsych.org/api/data/", {
@@ -117,12 +111,11 @@ function toCsv(arr, separator=',') {
 
 function generate_uploading_text(header, body, buttonText)
 {
-console.log(buttonText);
     const script_str =   
     "<% "+
-    "   foo();"+
+    "  foo();"+
     "   function foo() {"+
-    "        if (global.sent)"+
+    "        if (document.getElementById('redirect_but') !== null && (global.sent === undefined || global.sent))"+
     "            {return " + !!buttonText + " ? document.getElementById('redirect_but').disabled = false :  document.getElementById('redirect_but').click();}"+
     "        setTimeout(foo, 500);"+
     "   }"+
