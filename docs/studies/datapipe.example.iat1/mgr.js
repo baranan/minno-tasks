@@ -110,7 +110,7 @@ define(['managerAPI',
             type:'redirect', name:'redirecting', url: 'https://www.google.com/search?q='+pt 
         }],
 		
-        uploading: uploading_task({header: 'just a moment', body:'Just a moment... Loading... Please wait a litle bit...'})
+        uploading: uploading_task({header: 'just a moment', body:'Just a moment... Loading... Please wait a litle bit...', buttonText:'Continue'})
     });
 
     API.addSequence([
@@ -171,8 +171,8 @@ define(['managerAPI',
             ]
         },
 
-        {inherit: 'lastpage'},
 		{inherit: 'uploading'},
+        {inherit: 'lastpage'},
         {inherit: 'redirect'}
     ]);
 
