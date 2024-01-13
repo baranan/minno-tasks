@@ -112,7 +112,7 @@ define(['managerAPI',
             type:'redirect', name:'redirecting', url: 'https://www.google.com/search' 
         }],
 		
-        uploading: uploading_task({header: 'just a moment', body:'Just a moment... Loading... Please wait a litle bit...', buttonText:'Continue'})
+        uploading: uploading_task({header: 'just a moment', body:'Please wait, sending data... '})
     });
 
     API.addSequence([
