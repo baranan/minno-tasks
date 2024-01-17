@@ -1,11 +1,11 @@
-define(['managerAPI', 'https://cdn.jsdelivr.net/gh/minnojs/minno-datapipe@0.*/datapipe.min.js'], function(Manager) {
+define(['managerAPI', 'https://cdn.jsdelivr.net/gh/minnojs/minno-datapipe@1.*/datapipe.min.js'], function(Manager) {
     let API = new Manager();
 
     API.setName('mgr');
     API.addSettings('skip',true);
 
-	//Replace the 2nd argument with your DataPipe Experiment ID
-	init_data_pipe(API, 'DATAPIPEEXPERIMENTID', 'csv'); 
+	//MPORTANT: Replace the 2nd argument with your DataPipe Experiment ID
+	init_data_pipe(API, 'xOwLxGjrGV8I',  {file_type:'csv'});	
 
     //Randomly select which of two sets of category labels to use.
     let raceSet = API.shuffle(['a','b'])[0];
@@ -94,6 +94,9 @@ define(['managerAPI', 'https://cdn.jsdelivr.net/gh/minnojs/minno-datapipe@0.*/da
             //last:true, 
             header: 'You have completed the study'
         }], 
+		
+		//This task waits until the data are sent to the server.
+        uploading: uploading_task({header: 'just a moment', body:'Please wait, sending data... '})
         
         //Use if you want to redirect the participants elsewhere at the end of the study
         redirect:
@@ -125,6 +128,7 @@ define(['managerAPI', 'https://cdn.jsdelivr.net/gh/minnojs/minno-datapipe@0.*/da
             ]
         },
 
+        {inherit: 'uploading'},
         {inherit: 'lastpage'},
         {inherit: 'redirect'}
     ]);

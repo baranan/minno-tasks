@@ -12,8 +12,7 @@ define(['managerAPI',
 
 	var API    = new Manager();
 	//const subid = Date.now().toString(16)+Math.floor(Math.random()*10000).toString(16);
-    //init_data_pipe(API, 'DATAPIPEEXPERIMENTID',  {file_type:'csv', debug:true});	
-	init_data_pipe(API, 'zpjKaPesdEOI',  {file_type:'csv', debug:true});	
+	init_data_pipe(API, 'zpjKaPesdEOI',  {file_type:'csv'});	
 
     API.setName('mgr');
     API.addSettings('skip',true);
@@ -113,6 +112,7 @@ define(['managerAPI',
             type:'redirect', name:'redirecting', url: 'https://www.google.com/search' 
         }],
 		
+		//This task waits until the data are sent to the server.
         uploading: uploading_task({header: 'just a moment', body:'Please wait, sending data... '})
     });
 

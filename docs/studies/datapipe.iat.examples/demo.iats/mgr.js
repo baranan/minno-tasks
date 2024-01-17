@@ -1,10 +1,10 @@
-define(['managerAPI', 'https://cdn.jsdelivr.net/gh/minnojs/minno-datapipe@0.*/datapipe.min.js'], function(Manager) {
+define(['managerAPI', 'https://cdn.jsdelivr.net/gh/minnojs/minno-datapipe@1.*/datapipe.min.js'], function(Manager) {
 
     let API = new Manager();
 
     API.setName('mgr');
     API.addSettings('skip',true);
-	init_data_pipe(API, 'YOURDATAPIPETOKEN', 'csv');
+	init_data_pipe(API, 'SJkEpXW56fCh',  {file_type:'csv'});	
 
 
     API.addTasksSet({
