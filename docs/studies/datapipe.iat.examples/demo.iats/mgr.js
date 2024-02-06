@@ -4,7 +4,7 @@ define(['managerAPI', 'https://cdn.jsdelivr.net/gh/minnojs/minno-datapipe@1.*/da
 
     API.setName('mgr');
     API.addSettings('skip',true);
-	init_data_pipe(API, 'SJkEpXW56fCh',  {file_type:'csv', debug:true});	
+	init_data_pipe(API, 'SJkEpXW56fCh',  {file_type:'csv'});	
 
 
     API.addTasksSet({
