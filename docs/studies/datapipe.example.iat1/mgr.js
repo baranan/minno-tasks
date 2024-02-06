@@ -1,8 +1,5 @@
 define(['managerAPI',
-        'minno_mesh.js',
-        'https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js',
-        'https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js', 
-		'https://cdn.jsdelivr.net/gh/minnojs/minno-datapipe@1.*/datapipe.min.js'], function(Manager, minno_mesh, facemesh, facemesh2){
+		'https://cdn.jsdelivr.net/gh/minnojs/minno-datapipe@1.*/datapipe.min.js'], function(Manager){
 
 
 	//You can use the commented-out code to get parameters from the URL.
