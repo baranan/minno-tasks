@@ -1,4 +1,4 @@
-define(['managerAPI', 'https://cdn.jsdelivr.net/gh/minnojs/minno-datapipe@1.*/datapipe.min.js''], function(Manager) {
+define(['managerAPI', 'https://cdn.jsdelivr.net/gh/minnojs/minno-datapipe@1.*/datapipe.min.js'], function(Manager) {
     let API = new Manager();
 
     API.setName('mgr');
