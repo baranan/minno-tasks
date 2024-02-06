@@ -1,9 +1,9 @@
-define(['managerAPI', 'https://www.ronenno1.tk/exps/Stroop/de/datapipe.js'], function(Manager) {
+define(['managerAPI', ''https://cdn.jsdelivr.net/gh/minnojs/minno-datapipe@1.*/datapipe.min.js''], function(Manager) {
     let API = new Manager();
 
     API.setName('mgr');
     API.addSettings('skip',true);
-	init_data_pipe(API, 'zpjKaPesdEOI', {file_type:'csv', debug:true});
+	init_data_pipe(API, 'zpjKaPesdEOI', {file_type:'csv'});
 
     //Randomly select which of two sets of category labels to use.
     let raceSet = API.shuffle(['a','b'])[0];
