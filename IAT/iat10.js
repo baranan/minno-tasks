@@ -26,7 +26,8 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 				background: '#ffffff',
 				borderWidth: 5,
 				canvasBackground: '#ffffff',
-				borderColor: 'lightblue'
+				borderColor: 'lightblue',
+				css:{"touch-action": "manipulation"}
 			},
 			category1 : {
 				name : 'Black people', //Will appear in the data and in the default feedback message.
