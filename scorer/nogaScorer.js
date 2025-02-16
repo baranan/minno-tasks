@@ -75,7 +75,7 @@ function scorer_computeD(scorerObj){
 class ComputeData{
     constructor() {
         this.dataArray = {};                // The data array or structure the user provides.
-        this.AnalyzedVar = 'latency';       // The main variable used for the score computation. Usually will be the latency.
+        this.analyzedVar = 'latency';       // The main variable used for the score computation. Usually will be the latency.
         this.errorVar = 'score';            // The variable that indicates whether there was an error in the response
         this.condVar = '';                  // The name of the variable that will store the variables
         this.cond1VarValues = [];           // An array with the values of the condVar that are considerred "condition 1" in the comparison
@@ -235,7 +235,7 @@ class parcelCalc {
             let parcelName = value.data[computeData.parcelVar];
             let parcel = this.parcelArray.find(p => p.name === parcelName);
             if (parcel) {
-                const latency = value[computeData.AnalyzedVar];
+                const latency = value[computeData.analyzedVar];
                 if (latency <= computeData.maxRT) { //YBYB: Note that although R's cleanIAT removes >= 10000 latency, Greenwald et al., 2001 removed > 10000, which is what we do here.
                     totalTrials++;
                     if (value.data[computeData.errorVar] === 1) {
@@ -297,7 +297,7 @@ class parcelCalc {
         
         // Score correct-response trials, and perhaps also error-response trials (if errorLatency is set to 'latency' or 'penalty')
         
-        if (value[computeData.AnalyzedVar] < computeData.minRT)
+        if (value[computeData.analyzedVar] < computeData.minRT)
         {//Too fast
             return false;
         } else if (value.data[computeData.errorVar] === 0 || 
@@ -326,7 +326,7 @@ class parcelCalc {
     // Description: Helper method to calculate the mean of the array of trials.
     // It is used to calculate the mean of the analyzed variable for each condition.
     calcMean(trials, computeData) {
-        return trials.reduce((sum, trial) => sum + trial[computeData.AnalyzedVar], 0) / trials.length;
+        return trials.reduce((sum, trial) => sum + trial[computeData.analyzedVar], 0) / trials.length;
     }
 
     // calcSD
@@ -337,7 +337,7 @@ class parcelCalc {
     calcSD(trials, computeData) {
         let mean = this.calcMean(trials, computeData);
         return Math.sqrt(trials.reduce((sum, trial) => {
-            let diff = trial[computeData.AnalyzedVar] - mean;
+            let diff = trial[computeData.analyzedVar] - mean;
             return sum + diff * diff;
         }, 0) / (trials.length - 1));
     }
@@ -463,7 +463,7 @@ class parcelCalc {
                     let correctedTrial = {...trial}; 
                     if (trial.data.score === 1) { 
                         //Replace the latency of each error-response trials
-                        correctedTrial[computeData.AnalyzedVar] = currCond.correctTrialsMean + computeData.errorLatency.penalty;
+                        correctedTrial[computeData.analyzedVar] = currCond.correctTrialsMean + computeData.errorLatency.penalty;
                     }
                     return correctedTrial;
                 });
