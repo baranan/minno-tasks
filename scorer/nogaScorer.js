@@ -219,7 +219,7 @@ class parcelCalc {
         //// Initialize the parcels. (Create a parcel object for each parcel name mentioned in the scoring parameters)
         if (typeof computeData.parcelValues === 'undefined' || computeData.parcelValues.length === 0) {
             // No parcels were defined, so we will create a general parcel, and will compute a score only for that parcel.
-            let p = this.createParcel("general", computeData.cond1VarValues, computeData.cond2VarValues);
+            let p = this.createParcel("general123321", computeData.cond1VarValues, computeData.cond2VarValues);
             this.parcelArray.push(p);
         } else { //Parcels were defined, and we will create them based on their names.
             computeData.parcelValues.forEach((parcelName, index) => {
@@ -231,8 +231,8 @@ class parcelCalc {
          //// Set scoredData of the two conditions with the to-be-scored trials, 
          //// and count fast, slow, and valid trials
          for (const value of computeData.dataArray) { // Loop through each object in dataArray
-            // Find the parcel that matches the current object
-            let parcelName = value.data[computeData.parcelVar];
+            // Find the parcel that matches the current object (if no parcelValues were given, all trials go into one general parcel)
+            let parcelName = computeData.parcelValues.length === 0 ? "general123321" : value.data[computeData.parcelVar];
             let parcel = this.parcelArray.find(p => p.name === parcelName);
             if (parcel) {
                 const latency = value[computeData.analyzedVar];
